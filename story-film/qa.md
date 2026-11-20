@@ -35,7 +35,7 @@ checked by measurement only (the voice and music were never heard by the maker):
 | 11 | Looks like the page | The page's fonts (Bricolage Grotesque, Instrument Sans) and sprite loaded from the repo; palette from its tokens and the GTM walkthrough's town palette (sampled from roomiq.io); the page's components (pills, ledger tags, estimate card, proof chips, hero slabs) |
 | 12 | Every beat visible within 0.3 s of its word | `tools/beats.mjs`: one frame per line at its key word plus 0.5 s, all 18 seen against "shows" (the address pill was moved from +0.45 s to +0.1 s after "next") |
 | 13 | Legible at half size, nothing clipped | Overlay text at 26 px or more at 1080p; contact sheets checked for clipping (fixed: the address pill, the sign, the house in the rooms shot, the badge collisions) |
-| 14 | No flicker; frames depend on time alone | {TBD after render: fresh-browser re-draw check; flicker metric} |
+| 14 | No flicker; frames depend on time alone | Fresh-browser re-draw: 33 frames (the middle of every shot and 16 spread), drawn again shuffled, match the frames on disk byte for byte. `tools/flicker.py` on the MP4: the flipping pixels sit on camera moves only (0:02 to 0:06 push-in and glide, 0:41 the rise over the town, 1:12 the pull-out); on still overlays (the count pill, the product slab) the masks are empty, so no text shimmers |
 
 ## Sound (15)
 
@@ -43,11 +43,20 @@ checked by measurement only (the voice and music were never heard by the maker):
 |---|---|
 | Music under the voice | 18.9 dB while speaking (target 15 to 20), 14.3 dB in the pauses (target 12 to 15), measured on the stems by `tools/mix.py` |
 | Effects | Peaks 10.2 dB under the voice's peaks (target about 10) |
-| Loudness | Mix: -16.5 LUFS integrated, -1.5 dBTP. {TBD after render: measured on the encoded MP4} |
+| Loudness | Mix: -16.5 LUFS integrated, -1.5 dBTP. Encoded: MP4 (AAC) -16.5 LUFS, true peak -1.4 dBFS; WebM (Opus) -16.5 LUFS, -1.3 dBFS. The codecs add 0.1 to 0.2 dB over the mix's peak, still under the -1 dBTP ceiling streaming platforms use |
 
 ## On the page (16, 17)
 
 | # | Check | Result |
 |---|---|---|
-| 16 | Nothing loads before play; accessible dialog; phones | The media URLs sit in data attributes; `preload="none"`; captions on by default; Esc closes, focus returns (the page's own dialog code). {TBD after render: `tests/deploy-check.mjs`} |
-| 17 | The deployment serves it; the repo knows it is generated | `.vercelignore` anchors `/story-film/`; `tests/page.test.mjs` runs git's matching over it; `rendered-from.json` and its test; `tools/stamp.mjs` writes the `?v=`. {TBD after render} |
+| 16 | Nothing loads before play; accessible dialog; phones | `tests/deploy-check.mjs` in Chromium: no film request before the click; the hero opens the dialog (1188 px wide at 1440), the film plays with sound, the MP4 at 1920x1080, captions showing (WebVTT); Esc closes, focus returns to the hero button, the film pauses; on a 390 px phone the hero button opens it full width and it plays. Light, dark and phone screenshots checked |
+| 17 | The deployment serves it; the repo knows it is generated | `.vercelignore` anchors `/story-film/`: git's matching keeps `media/story-film/` and drops the engine (`tests/page.test.mjs`); the deploy-style server answers 404 for the engine and serves both encodings, each playing. `rendered-from.json` matches the sources; every `?v=` is the file's content hash (`tools/stamp.mjs`). `npm test`: 10 of 10 pass |
+
+## The files
+
+| File | Size | Notes |
+|---|---|---|
+| `roomiq-story.mp4` | 17.0 MB | H.264 High 4.0, 1920x1080, 30 fps, AAC 48 kHz; 1.16 Mbps on average, 0.30 to 1.72 Mbps per 10 s (the wide town shots cost the most) |
+| `roomiq-story.webm` | 12.1 MB | VP9 and Opus, 0.82 Mbps |
+| `roomiq-story.en.vtt` | 2.9 KB | 40 cues from the voiceover's timing, split at phrases; equal to the narration word for word |
+| `roomiq-story-poster.webp` | 54 KB | The opening wide shot of Lakeview, 1280 wide |

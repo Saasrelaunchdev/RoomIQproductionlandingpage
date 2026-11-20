@@ -1,6 +1,6 @@
 # RoomIQ story film
 
-The film the landing page's hero opens: "See the investment inside the house", 1:58, narrated, made with the
+The film the landing page's hero opens: "See the investment inside the house", 1:57, narrated, made with the
 `landing-story-film` skill (Saasrelaunchdev/Landingpagestoryvideo) from the GTM repo (Saasrelaunchdev/roomIQGTMBuild,
 `main`) and this page. `brief.md` says what it is built from and why; `beats.md` is the beat sheet; `script.json` holds
 every spoken word with the claim or source behind it. The rendered files are in `../media/story-film/` (generated).
