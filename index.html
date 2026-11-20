@@ -1248,6 +1248,37 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
 }
 /* Any touch screen with the PC layout: touch-sized nav links */
 @media (hover:none) and (pointer:coarse){.nav a{padding-block:10px}}
+
+/* ============================================================
+   The story film: a button over the hero visual (the poster is the hero itself), a badge that appears once the
+   hero's intro has landed, and a wide dialog. Nothing of the film loads before the click.
+   ============================================================ */
+.film-open{position:absolute;inset:0;z-index:4;display:block;width:100%;padding:0;border:0;border-radius:var(--r-screen);background:transparent;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.no-js .film-open{display:none}
+.film-open:focus-visible{outline:3px solid var(--c-focus);outline-offset:6px}
+.film-badge{position:absolute;left:3%;bottom:16%;display:inline-flex;align-items:center;gap:10px;padding:7px 16px 7px 7px;border-radius:999px;background:var(--c-accent-fill);color:var(--c-on-accent);font:650 15px/1.2 var(--f-text);white-space:nowrap;box-shadow:0 0 0 3px color-mix(in srgb,var(--c-bg) 70%,transparent),0 16px 34px -14px color-mix(in srgb,var(--c-shadow) 75%,transparent);transition:transform var(--t-ui) var(--ease-out)}
+.film-play{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:#fff;color:var(--c-ink-950)}
+.film-play svg{width:16px;height:16px;margin-left:2px;fill:currentColor}
+.film-meta{font-weight:500;opacity:.88}
+.film-meta::before{content:"·";margin-right:8px}
+.film-open:hover .film-badge{transform:translateY(-2px)}
+.js:not(.tier-c) .hero-vis .film-badge{opacity:0}
+.js:not(.tier-c) .hero-vis.run .film-badge{animation:film-in var(--t-enter) var(--ease-out) 2.4s both}
+@keyframes film-in{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+.dlg-film .dlg-in{gap:10px}
+.film-stage{position:relative;aspect-ratio:16/9;width:100%;border-radius:12px;overflow:hidden;background:var(--c-ink-975)}
+.film-video{display:block;width:100%;height:100%;background:var(--c-ink-975)}
+.film-video::cue{font:500 1.05em/1.35 var(--f-text);background:color-mix(in srgb,var(--c-ink-975) 78%,transparent);color:#fff}
+.film-note{font:500 13.5px/1.4 var(--f-text);color:var(--c-text-2)}
+@media (min-width:900px){
+  .dlg-film{width:min(1240px,calc(100% - 48px));max-height:calc(100svh - 32px)}
+  .dlg-film .dlg-in{padding:0 26px 22px;max-height:calc(100svh - 32px)}
+  .film-badge{font-size:16px}
+}
+@media (max-width:899px){
+  .film-badge{bottom:14%;font-size:14px}
+  .dlg-film{max-height:100svh}
+}
 </style>
 </head>
 <body>
@@ -1332,6 +1363,7 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
         <div class="slab slab-side"><div class="cf cf-crop" data-screen="{&quot;cap&quot;:&quot;location&quot;,&quot;shot&quot;:&quot;supply&quot;,&quot;kind&quot;:&quot;crop&quot;}"></div></div>
         <span class="drift d1">$200/wk?</span><span class="drift d2">90%?</span><span class="drift d3">Supply?</span>
       </div>
+      <button type="button" class="film-open" data-film-open data-cta="film" data-placement="hero" aria-haspopup="dialog" aria-label="Watch the RoomIQ story, 1 minute 58 seconds, with sound and captions"><span class="film-badge" aria-hidden="true"><span class="film-play"><svg viewBox="0 0 24 24"><path d="M8 5.6v12.8L18.6 12z"/></svg></span>Watch the story<span class="film-meta">1:58 · sound on</span></span></button>
       <figcaption class="proof-chip">Product preview · demo data · web app · the operator</figcaption>
     </figure>
   </div>
@@ -1814,6 +1846,15 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
       </div>
       <p class="err" id="e-send" role="alert"></p>
     </form>
+  </div>
+</dialog>
+
+<!-- The story film: opened from the hero. The media URLs sit in data attributes and load only when it opens. -->
+<dialog class="dlg dlg-film" id="film-dlg" aria-labelledby="film-h">
+  <div class="dlg-in">
+    <div class="dlg-head"><h2 class="h3" id="film-h">The RoomIQ story</h2><button class="icon-btn dlg-x" type="button" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="film-stage"><video class="film-video" controls playsinline preload="none" data-poster="/media/story-film/roomiq-story-poster.webp?v=0" data-mp4="/media/story-film/roomiq-story.mp4?v=0" data-webm="/media/story-film/roomiq-story.webm?v=0" data-vtt="/media/story-film/roomiq-story.en.vtt?v=0"></video></div>
+    <p class="film-note">Every house, market and figure in the film is made up. Product previews use demo data.</p>
   </div>
 </dialog>
 
@@ -2596,6 +2637,41 @@ if (typeof module !== "undefined") module.exports = RiqMath;
     $(".dlg-x", dlg).addEventListener("click", () => dlg.close());
     dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
   });
+
+  // The story film: the hero opens it; its files load only now, and it plays with sound and captions
+  const filmDlg = $("#film-dlg");
+  if (filmDlg) {
+    const film = $("video", filmDlg), marks = {};
+    let filmLoaded = false;
+    const loadFilm = () => {
+      if (filmLoaded) return;
+      filmLoaded = true;
+      film.poster = film.dataset.poster;
+      [["mp4", "video/mp4"], ["webm", "video/webm"]].forEach(([k, type]) => { const src = document.createElement("source"); src.src = film.dataset[k]; src.type = type; film.appendChild(src); });
+      const cc = document.createElement("track");
+      Object.assign(cc, { kind: "captions", srclang: "en", label: "English", src: film.dataset.vtt, default: true });
+      film.appendChild(cc);
+      film.load();
+    };
+    document.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-film-open]");
+      if (!b) return;
+      e.preventDefault();
+      if (!filmDlg.showModal) { location.assign(film.dataset.mp4); return; }
+      loadFilm();
+      openDlg(filmDlg, b);
+      if (film.textTracks[0]) film.textTracks[0].mode = "showing";
+      if (film.ended) film.currentTime = 0;
+      const p = film.play();
+      if (p && p.catch) p.catch(() => {});
+      film.focus({ preventScroll: true });
+    });
+    filmDlg.addEventListener("close", () => film.pause());
+    film.addEventListener("timeupdate", () => {
+      const pc = Math.floor((film.currentTime / (film.duration || Infinity)) * 4) * 25;
+      if (pc && !marks[pc]) { marks[pc] = 1; track("landing_film_progress", { percent: pc }); }
+    });
+  }
   const post = async (data) => {
     passThrough.forEach((k) => { if (params.has(k)) data[k] = params.get(k); });
     data.page = location.href;

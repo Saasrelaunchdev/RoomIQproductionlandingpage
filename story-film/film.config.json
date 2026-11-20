@@ -1,0 +1,35 @@
+{
+  "slug": "roomiq-story",
+  "title": "See the investment inside the house",
+  "site": "..",
+  "output": "../media/story-film/",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "three": true,
+  "poster": 1.5,
+  "fonts": [
+    { "family": "Bricolage Grotesque", "src": "/site/fonts/bricolage-grotesque-latin-opsz-normal.woff2", "weight": "200 800" },
+    { "family": "Instrument Sans", "src": "/site/fonts/instrument-sans-latin-wght-normal.woff2", "weight": "400 700" }
+  ],
+  "sprite": { "page": "/site/index.html" },
+  "brand": {
+    "brand": "#00B4D8", "brand2": "#83D5EE", "brandDeep": "#00667B", "brandSoft": "#D9F4FC",
+    "ink": "#03045E", "ink2": "#565B65", "ink3": "#6F747F", "line": "#EBEEF6",
+    "canvas": "#FFFFFF", "canvas2": "#D9F4FC", "night": "#010041", "night2": "#081980",
+    "ok": "#14A176", "okSoft": "#E0F7EE", "warn": "#F2B442", "warnSoft": "#FFF5E7", "rival": "#DE9D00", "star": "#F2B442",
+    "signalText": "#785300", "action": "#0077B6", "surface": "#FAFCFF", "surface2": "#F4F7FE", "lineStrong": "#DADEE6",
+    "fontDisplay": "Bricolage Grotesque", "fontText": "Instrument Sans"
+  },
+  "loudness": { "I": -16.5, "TP": -1.5, "LRA": 7 },
+  "encode": { "h264Crf": 26, "vp9Crf": 38, "vp9Kbps": 900, "vp9MaxKbps": 1400 },
+  "claims": {
+    "banned": ["leverage", "unlock", "seamless", "robust", "streamline", "cutting-edge", "empower", "game-changer", "here's the thing",
+               "accurate", "accurately", "predicts", "investor-grade", "lender-ready", "guarantee", "nationwide", "every US market",
+               "real occupancy", "rent collected", "rental income data", "powered by", "official", "partner of", "in minutes",
+               "cash-flowing", "boost", "cheaper", "best value", "best markets", "AI comps", "rooms just like yours", "compliant",
+               "insurance-ready", "testimonial"],
+    "bannedPatterns": ["[\\u2013\\u2014]", "it's not [^,.]+, it's", "the (only|first|leading) (room|co-?living|underwriting|rent)",
+                       "\\b(will|would) (earn|make|return)", "\\b\\d+% (more|higher|better)", "padsplit|biggerpockets|dealcheck|pillowmarkets|mashvisor"]
+  }
+}

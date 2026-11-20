@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Story film (render page)</title>
+<link rel="stylesheet" href="ui.css">
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head>
+<body>
+<div id="bg"></div><div id="bgn"></div>
+<canvas id="gl" width="1920" height="1080"></canvas>
+<div id="veil"></div>
+<div id="ov"><svg id="beams" viewBox="0 0 1920 1080" aria-hidden="true"></svg></div>
+<!-- the landing page's icon sprite goes here: a zero-size box, never display:none (its SVG gradients would not paint) -->
+<div id="sprite" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true"></div>
+<script type="module">
+// The render page. tools/render.mjs opens it, calls seek(t) for every frame and takes a screenshot. In a browser:
+// /src/?t=33.5 shows that moment, /src/?play plays it in real time (no sound).
+import { createFrame } from './frame.js';
+
+const config = await (await fetch('/film.config.json')).json();
+const script = await (await fetch('/script.json')).json();
+
+// brand colours and fonts as CSS variables, from the config (sampled from the landing page)
+const root = document.documentElement.style;
+for (const [k, v] of Object.entries(config.brand || {})) root.setProperty('--' + k, v);
+root.setProperty('--f-d', `"${config.brand.fontDisplay}", system-ui, sans-serif`);
+root.setProperty('--f-t', `"${config.brand.fontText}", system-ui, sans-serif`);
+for (const f of config.fonts || []) {
+  const face = new FontFace(f.family, `url(${f.src})`, { weight: f.weight || '400', style: f.style || 'normal' });
+  document.fonts.add(await face.load());
+}
+await document.fonts.ready;
+
+// the landing page's icons and logo, so the film draws them exactly as the page does
+if (config.sprite && config.sprite.page) {
+  const page = await (await fetch(config.sprite.page)).text();
+  const m = page.match(new RegExp(config.sprite.match || '<svg[^>]*>\\s*(?:<defs>)?\\s*<symbol[\\s\\S]*?<\\/svg>'));
+  if (m) document.getElementById('sprite').innerHTML = m[0];
+  else console.warn('no icon sprite found in', config.sprite.page);
+}
+
+// the narration's timing; before the voice exists, estimated from the script (about 2.6 words a second) so scenes can
+// be built first. The render refuses estimated timing.
+let timings;
+const r = await fetch('/audio/timings.json');
+if (r.ok) timings = await r.json();
+else {
+  let t = script.leadIn || 1.5;
+  const lines = script.lines.map((l) => { const d = l.text.split(/\s+/).length / 2.6, line = { ...l, start: t, end: t + d }; t += d + (l.pause ?? 0.5); return line; });
+  timings = { estimated: true, duration: t + (script.tail || 2.5), lines };
+  console.warn('audio/timings.json not found: timing estimated from script.json');
+}
+
+let S = null, THREE = null, kit = null;
+if (config.three !== false) {
+  THREE = await import('three');
+  kit = await import('./kit3d.js');
+  const { makeStage } = await import('./stage.js');
+  S = makeStage(document.getElementById('gl'), { width: config.width, height: config.height });
+}
+const F = createFrame({ timings, config, stage: S, THREE });
+const { build } = await import('./story.js');
+await build({ F, S, THREE, kit, config, script, timings });
+F.freeze();
+
+window.duration = timings.duration;
+window.estimated = !!timings.estimated;
+window.shots = F.shots();
+window.seek = (t) => F.update(t);
+const q = new URLSearchParams(location.search);
+if (q.has('play')) {
+  const t0 = performance.now() - (+q.get('t') || 0) * 1000;
+  const loop = () => { const t = (performance.now() - t0) / 1000; F.update(t); if (t < timings.duration) requestAnimationFrame(loop); };
+  loop();
+} else F.update(+q.get('t') || 0);
+window.ready = true;
+</script>
+</body>
+</html>

@@ -10,7 +10,18 @@ This repo is the page's home. Edit `index.html` here directly; Vercel serves the
 - `media/`: the product previews (AVIF and WebP at several widths) and `media/demo/` (the deal demo's three made-up houses).
 - `fonts/`: Bricolage Grotesque (display) and Instrument Sans (text).
 - `og.png` (the share image, 1200 x 630) and `favicon.svg`.
+- `media/story-film/`: the story film the hero opens (MP4, WebM, captions, poster). **Generated**: never edit or replace these by hand; rebuild them from `story-film/`.
+- `story-film/`: the film's sources and tools (script, voice, scenes, sound, render, tests), made with the `landing-story-film` skill (`Saasrelaunchdev/Landingpagestoryvideo`). Not deployed (`.vercelignore` anchors `/story-film/`). Its `brief.md` and `beats.md` record what the film says and why.
 - The page was first built in `Saasrelaunchdev/RoomIQ-landing-page` (brief, mockup sources, tests, build tools). That repo is history now, read-only.
+
+## The story film
+
+The hero visual is the film's poster: a button over it opens a dialog that loads the film only on click, plays it with sound and captions, closes on Esc and returns focus. The film follows the same non-negotiables as the page (its claims, numbers and words are tested in `story-film/tests/`).
+
+- Change words: edit `story-film/script.json`, then `.venv/bin/python -I tools/voice.py --check`, `.venv/bin/python -I tools/mix.py`, delete `story-film/out/frames/` and run `node tools/render.mjs`.
+- Change a picture only: edit `story-film/src/`, delete the frames for the seconds that change (frame = seconds x 30) and run `node tools/render.mjs --keep-sound`.
+- After any render: `node tools/stamp.mjs` (writes each file's `?v=` into `index.html`), then `npm test` in `story-film/` (fails while the film, its sources or the page disagree).
+- Setup and the full loop: `story-film/README.md`.
 
 ## Non-negotiables
 

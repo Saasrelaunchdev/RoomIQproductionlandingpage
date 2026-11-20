@@ -1,0 +1,191 @@
+/* The film's 2D layer, drawn at 1920x1080: the landing page's own components (pills, the napkin ledger with its amber
+   "borrowed" tags, the estimate card, proof chips, the hero's screen slabs and drifting guesses), mapped to the brand
+   variables set from film.config.json. Sized to stay legible when the film plays at half size: no word under 26px.
+   Colour meanings follow the page: navy is authority, cyan is evidence (observed and labelled), amber is "the one
+   number nobody has checked". Red never appears. Nothing here animates by itself, and nothing uses will-change
+   (Chromium would reuse a stale drawing and the text would shimmer): the story places every element each frame. */
+:root{
+  --f-display:var(--f-d);--f-text:var(--f-t);
+  --c-logo-ink:var(--ink);--c-logo-accent:var(--brand);--c-accent:var(--brand);--c-primary-600:#00829D;
+  --shadow-card:0 2px 4px rgba(3,4,94,.06),0 40px 80px -40px rgba(3,4,94,.5);
+  --shadow-device:0 0 0 1.5px rgba(166,171,181,.45),0 44px 90px -44px rgba(3,4,94,.62);
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--canvas);-webkit-font-smoothing:antialiased}
+#bg,#bgn,#veil{position:absolute;inset:0}
+#bg{background:radial-gradient(60% 55% at 85% 0%,var(--canvas2) 0%,transparent 70%),radial-gradient(50% 50% at 0% 100%,var(--surface2) 0%,transparent 70%),var(--canvas)}
+#bgn{opacity:0;background:radial-gradient(60% 50% at 85% 0%,color-mix(in srgb,var(--brand) 22%,transparent) 0%,transparent 70%),radial-gradient(55% 50% at 0% 100%,var(--night2) 0%,transparent 70%),var(--night)}
+#gl{position:absolute;inset:0;width:1920px;height:1080px}
+#veil{opacity:0;background:var(--canvas);pointer-events:none}
+#ov{position:absolute;inset:0;font-family:var(--f-t);color:var(--ink)}
+#beams{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible;pointer-events:none}
+#beams path{fill:none;stroke:var(--brand);stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 7px color-mix(in srgb,var(--brand) 80%,transparent))}
+#beams path.ring{stroke-width:6;stroke-dasharray:18 12;filter:none}
+#beams path.ring.cy{stroke:var(--brand);filter:drop-shadow(0 0 6px color-mix(in srgb,var(--brand) 70%,transparent))}
+#beams path.ring.am{stroke:#E8A21A;filter:drop-shadow(0 0 6px rgba(242,180,66,.7))}
+#beams path.ringfill{stroke:none;fill:color-mix(in srgb,var(--brand) 14%,transparent);filter:none}
+.ic{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.o{position:absolute;left:0;top:0;opacity:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* Pills: what just happened, in 2 to 6 words */
+.pill{display:inline-flex;align-items:center;gap:14px;padding:16px 28px 16px 20px;border-radius:999px;font:600 32px/1 var(--f-t);white-space:nowrap;background:#fff;color:var(--ink);box-shadow:0 0 0 2px var(--line),0 26px 50px -24px rgba(3,4,94,.55)}
+.pill .ic{width:34px;height:34px;stroke-width:2.2;color:var(--brandDeep)}
+.pill b{font-weight:700}
+.pill .sub{font-weight:500;color:var(--ink2)}
+.pill.cy{box-shadow:0 0 0 3px var(--brand),0 26px 50px -24px rgba(3,4,94,.55)}
+.pill.am{background:var(--warnSoft);color:var(--signalText);box-shadow:0 0 0 3px var(--warn),0 26px 50px -24px rgba(3,4,94,.45)}
+.pill.am .ic{color:var(--signalText)}
+.pill.navy{background:var(--ink);color:#fff;box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 45%,transparent),0 26px 50px -22px rgba(1,0,65,.7)}
+.pill.navy .ic{color:var(--brand)}
+.pill.big{font-size:40px;padding:20px 34px 20px 24px}
+.pill .dot{width:16px;height:16px;border-radius:50%;background:var(--brand);box-shadow:0 0 14px var(--brand)}
+.pill.am .dot{background:var(--warn);box-shadow:none}
+
+/* Tags under a number, as in the page's ledger */
+.tag{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;background:var(--surface2);border:2px solid var(--lineStrong);font:600 26px/1.2 var(--f-t);color:var(--ink2);white-space:nowrap}
+.tag.borrowed{background:color-mix(in srgb,var(--warn) 16%,#fff);border-color:color-mix(in srgb,var(--warn) 70%,transparent);color:var(--signalText)}
+.tag.ev{background:color-mix(in srgb,var(--brand) 12%,#fff);border-color:color-mix(in srgb,var(--brand) 60%,transparent);color:var(--brandDeep)}
+
+/* The napkin: the page's estimate card and ledger in one card. Rows are .nr; .q marks a borrowed or unknown value. */
+.nap{width:1380px;padding:40px 52px 38px;border-radius:32px;background:#fff;box-shadow:0 0 0 2px var(--lineStrong),var(--shadow-card)}
+.nap h3{margin:0 0 6px;font:700 46px/1.1 var(--f-d);letter-spacing:-.02em;color:var(--ink)}
+.nap .kick{font:600 26px/1.2 var(--f-t);letter-spacing:.08em;text-transform:uppercase;color:var(--brandDeep)}
+.nap .fx{display:flex;align-items:baseline;flex-wrap:nowrap;gap:16px;margin:22px 0 6px;padding:20px 26px;border-radius:20px;background:var(--surface2);font:700 44px/1.1 var(--f-d);color:var(--ink);letter-spacing:-.015em;white-space:nowrap}
+.nap .fx span{opacity:.18}
+.nap .fx span.on{opacity:1}
+.nap .fx .x{font-weight:500;color:var(--ink3)}
+.nap .fx .q{color:var(--signalText)}
+.nap .fx .v{color:var(--ink)}
+.nap .res{display:flex;align-items:baseline;gap:18px;margin:6px 0 4px}
+.nap .res b{font:800 84px/1 var(--f-d);letter-spacing:-.02em;color:var(--ink)}
+.nap .res small{font:500 32px/1.2 var(--f-t);color:var(--ink2)}
+.nap .rows{display:grid;margin-top:18px;border-top:2px solid var(--line)}
+.nr{display:grid;grid-template-columns:290px 220px 1fr;align-items:center;gap:20px;padding:14px 4px;border-bottom:2px solid var(--line);min-height:86px}
+.nr:last-child{border-bottom:0}
+.nr .k{font:650 32px/1.2 var(--f-t);color:var(--ink)}
+.nr .v{font:800 46px/1 var(--f-d);color:var(--ink);letter-spacing:-.01em}
+.nr .v.q{color:var(--signalText)}
+.nr .e{display:flex;align-items:center;gap:12px;font:500 28px/1.25 var(--f-t);color:var(--ink)}
+.nr .e .ic{width:34px;height:34px;color:var(--brandDeep);stroke-width:2.6}
+.nr .ghost{height:58px;border-radius:14px;border:3px dashed color-mix(in srgb,var(--warn) 70%,transparent);background:color-mix(in srgb,var(--warn) 6%,transparent)}
+.nap .end{font:800 40px/1.1 var(--f-d);letter-spacing:-.02em;color:var(--ink);white-space:nowrap}
+.nap .send{display:inline-flex;flex:none;align-items:center;gap:14px;padding:20px 34px;border-radius:999px;background:linear-gradient(135deg,var(--ink),var(--action));color:#fff;font:650 32px/1 var(--f-t)}
+.nap .send .ic{width:30px;height:30px}
+.nap .foot{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px}
+
+/* A pointer that taps a button */
+.tap{width:96px;height:96px;margin:-48px 0 0 -48px;border-radius:50%;background:color-mix(in srgb,var(--brand) 26%,transparent);box-shadow:0 0 0 4px color-mix(in srgb,var(--brand) 60%,transparent)}
+.cursor{width:44px;height:56px}
+.cursor svg{width:44px;height:56px;filter:drop-shadow(0 6px 10px rgba(3,4,94,.35))}
+
+/* Chips over the 3D rooms and houses */
+.rc{display:inline-flex;align-items:center;gap:10px;padding:10px 18px 10px 14px;border-radius:999px;background:#fff;color:var(--ink);font:650 27px/1 var(--f-t);white-space:nowrap;box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 70%,transparent),0 16px 30px -16px rgba(3,4,94,.55)}
+.rc .ic{width:28px;height:28px;color:var(--brandDeep);stroke-width:2.4}
+.rc.pv{background:var(--brandSoft)}
+.rc.vac{background:var(--warnSoft);color:var(--signalText);box-shadow:0 0 0 3px var(--warn),0 16px 30px -16px rgba(3,4,94,.45)}
+.rc.vac .ic{color:var(--signalText)}
+.pin{width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 5px #fff,0 0 22px 4px color-mix(in srgb,var(--brand) 70%,transparent)}
+.pin.warm{background:#FFD27A;box-shadow:0 0 0 5px #fff,0 0 24px 6px rgba(255,200,101,.8)}
+.glow{width:92px;height:92px;border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--brand) 50%,transparent),transparent)}
+.glow::after{content:"";position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px;border-radius:50%;background:var(--brand);box-shadow:0 0 0 5px #fff,0 0 26px var(--brand)}
+.ring{width:240px;height:240px;border-radius:50%;border:5px solid currentColor}
+
+/* A counter: a number that ticks up and what it counts */
+.count{display:inline-flex;align-items:center;gap:22px;padding:18px 34px 18px 22px;border-radius:999px;background:#fff;box-shadow:0 0 0 3px var(--lineStrong),0 26px 50px -24px rgba(3,4,94,.55);white-space:nowrap}
+.count b{display:inline-grid;place-items:center;min-width:86px;height:86px;padding:0 14px;border-radius:999px;background:var(--ink);color:#fff;font:800 50px/1 var(--f-d)}
+.count span{font:600 34px/1.15 var(--f-t);color:var(--ink)}
+.count small{display:block;font:500 28px/1.2 var(--f-t);color:var(--ink2)}
+.count.cy{box-shadow:0 0 0 3px var(--brand),0 26px 50px -24px rgba(3,4,94,.55)}
+.count.cy b{background:var(--brand);color:var(--night)}
+.count.am{box-shadow:0 0 0 3px var(--warn),0 26px 50px -24px rgba(3,4,94,.45)}
+
+/* The cost: the page's napkin what-if, as two bars and the gap */
+.cost{width:1500px;display:grid;gap:30px}
+.cost .q{font:700 64px/1.08 var(--f-d);letter-spacing:-.02em;color:var(--ink)}
+.cost .q em{font-style:normal;color:var(--signalText)}
+.bar{display:grid;grid-template-columns:300px 1fr;align-items:center;gap:30px}
+.bar .l{font:600 34px/1.2 var(--f-t);color:var(--ink2)}
+.bar .l b{display:block;font:800 40px/1.1 var(--f-d);color:var(--ink)}
+.bar .t{position:relative;height:96px;border-radius:20px;background:var(--surface2);overflow:hidden}
+.bar .f{position:absolute;left:0;top:0;bottom:0;border-radius:20px;background:var(--ink);display:flex;align-items:center;justify-content:flex-end;padding-right:26px;color:#fff;font:800 46px/1 var(--f-d)}
+.bar .f.am{background:color-mix(in srgb,var(--ink) 82%,#fff)}
+.bar .gap{position:absolute;top:0;bottom:0;border-radius:0 20px 20px 0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--warn) 50%,#fff) 0 14px,color-mix(in srgb,var(--warn) 22%,#fff) 14px 28px);box-shadow:inset 0 0 0 3px var(--warn)}
+.cost .off{display:flex;align-items:baseline;gap:22px}
+.cost .off b{font:800 132px/0.95 var(--f-d);letter-spacing:-.03em;color:var(--signalText)}
+.cost .off span{font:600 46px/1.1 var(--f-d);color:var(--ink)}
+.cost .src{font:500 28px/1.35 var(--f-t);color:var(--ink2)}
+
+/* The product's screens, in slabs as on the page's hero: an image of the screen (demo data) and its caption */
+.slab{width:1300px}
+.slab .scr{position:relative;width:100%;aspect-ratio:16/10;border-radius:22px;overflow:hidden;background:#fff;box-shadow:var(--shadow-device)}
+.slab .scr img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.slab .scr .wash{position:absolute;inset:0;background:rgba(255,255,255,0)}
+.proof{display:flex;align-items:center;gap:12px;margin-top:20px;font:500 27px/1.3 var(--f-t);color:var(--ink2);white-space:nowrap}
+.proof::before{content:"";width:13px;height:13px;border-radius:50%;background:var(--brand)}
+.hl{position:absolute;border-radius:14px;box-shadow:0 0 0 4px var(--brand),0 0 40px 10px color-mix(in srgb,var(--brand) 45%,transparent)}
+.hl.am{box-shadow:0 0 0 4px var(--warn),0 0 30px 6px color-mix(in srgb,var(--warn) 40%,transparent)}
+.typed{position:absolute;display:flex;align-items:center;background:#fff;font:500 18px/1 "Instrument Sans",sans-serif;color:#03045E;white-space:nowrap;overflow:hidden}
+.typed i{display:inline-block;width:2px;height:22px;margin-left:2px;background:#03045E}
+.dotring{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;box-shadow:0 0 0 3px var(--brand),0 0 16px 4px color-mix(in srgb,var(--brand) 60%,transparent)}
+
+/* Lifted cards: crisp recreations of a product region, at film size */
+.lift{width:980px;padding:40px 46px 42px;border-radius:30px;background:#fff;box-shadow:0 0 0 3px var(--brand),0 0 80px 14px color-mix(in srgb,var(--brand) 32%,transparent),0 60px 110px -50px rgba(3,4,94,.6)}
+.lift .chips{display:flex;gap:16px;margin-bottom:24px}
+.chip{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;font:600 28px/1 var(--f-t);white-space:nowrap;background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--lineStrong)}
+.chip.ok{background:#E0F7EE;color:#0B7A57;box-shadow:inset 0 0 0 2px #A5E5CD}
+.chip.am{background:var(--warnSoft);color:var(--signalText);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--warn) 70%,transparent)}
+.chip.cy{background:var(--brandSoft);color:var(--brandDeep);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--brand) 60%,transparent)}
+.chip .ic{width:28px;height:28px;stroke-width:2.4}
+.lift .k{font:600 26px/1 var(--f-t);letter-spacing:.16em;text-transform:uppercase;color:var(--ink2)}
+.lift .big{display:flex;align-items:baseline;gap:12px;margin:12px 0 10px}
+.lift .big b{font:800 150px/0.92 var(--f-d);letter-spacing:-.035em;color:var(--ink)}
+.lift .big span{font:500 54px/1 var(--f-t);color:var(--ink)}
+.lift .fml{font:500 34px/1.3 var(--f-t);color:var(--ink2);white-space:nowrap}
+.lift .fml b{font-weight:700;color:var(--ink)}
+.lift .why{margin-top:16px;font:500 28px/1.35 var(--f-t);color:var(--ink2)}
+.lift .why b{color:var(--ink);font-weight:650}
+.lift .nx{display:flex;align-items:flex-start;gap:16px;margin-top:22px;padding:20px 24px;border-radius:20px;background:var(--warnSoft);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--warn) 55%,transparent)}
+.lift .nx .ic{width:36px;height:36px;color:var(--signalText);flex:none;margin-top:2px}
+.lift .nx b{display:block;font:700 30px/1.2 var(--f-t);color:var(--signalText)}
+.lift .nx span{font:500 27px/1.3 var(--f-t);color:var(--signalText)}
+
+/* The room mix, lifted from the baseline screen */
+.mix{width:860px;padding:34px 38px 36px;border-radius:28px;background:#fff;box-shadow:0 0 0 3px var(--brand),0 0 70px 10px color-mix(in srgb,var(--brand) 26%,transparent),0 50px 100px -50px rgba(3,4,94,.6)}
+.mix .k{font:600 24px/1 var(--f-t);letter-spacing:.14em;text-transform:uppercase;color:var(--brandDeep)}
+.mix h4{margin:10px 0 18px;font:700 42px/1.1 var(--f-d);color:var(--ink)}
+.mr{display:grid;grid-template-columns:150px 170px 1fr;align-items:center;gap:14px;padding:14px 20px;margin-top:10px;border-radius:16px;background:var(--surface2);font:500 29px/1.2 var(--f-t);color:var(--ink2)}
+.mr b{font-weight:700;color:var(--ink)}
+.mr .pb{font-weight:650;color:#0B7A57}
+.mr.add{background:transparent;outline:3px dashed color-mix(in srgb,var(--warn) 70%,transparent);outline-offset:-3px;color:var(--signalText);font-weight:600}
+
+/* The deal, tested with your own costs */
+.deal{width:1180px;padding:30px 36px;border-radius:26px;background:#fff;box-shadow:0 0 0 2px var(--lineStrong),var(--shadow-card)}
+.deal .row{display:flex;gap:14px;flex-wrap:nowrap}
+.deal .t{flex:1;display:flex;align-items:center;gap:12px;padding:18px 20px;border-radius:18px;background:var(--surface2);font:650 29px/1.15 var(--f-t);color:var(--ink);white-space:nowrap}
+.deal .t .ic{width:30px;height:30px;color:var(--brandDeep);stroke-width:2.6}
+.deal .h{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font:700 32px/1.2 var(--f-t);color:var(--ink)}
+.deal .h span{font:500 26px/1.2 var(--f-t);color:var(--ink2)}
+.deal .n{margin-top:14px;font:500 26px/1.3 var(--f-t);color:var(--ink2)}
+
+/* The brand */
+.wm{display:flex;align-items:center;gap:26px}
+.wm svg{height:110px;width:auto}
+.drift{display:inline-flex;align-items:center;padding:14px 26px;border-radius:999px;background:var(--surface);border:3px dashed var(--lineStrong);color:var(--ink2);font:600 34px/1 var(--f-t);white-space:nowrap}
+.drift.am{border-color:color-mix(in srgb,var(--warn) 75%,transparent);background:var(--warnSoft);color:var(--signalText)}
+
+/* The close: the page's hero, then the end card */
+.herohead{width:760px}
+.herohead .eb{font:600 30px/1.2 var(--f-t);color:var(--brandDeep)}
+.herohead h2{margin:18px 0 0;font:800 116px/0.96 var(--f-d);letter-spacing:-.03em;color:var(--ink)}
+.herohead p{margin:30px 0 0;font:500 36px/1.35 var(--f-t);color:var(--ink2)}
+.herohead .small{margin:22px 0 0;font:500 27px/1.3 var(--f-t);color:var(--ink2)}
+.herohead .btn{display:inline-flex;align-items:center;gap:14px;margin-top:38px;padding:24px 40px;border-radius:999px;background:linear-gradient(135deg,var(--ink),var(--action));color:#fff;font:650 34px/1 var(--f-t)}
+.herohead .btn .ic{width:32px;height:32px}
+.logo{height:64px}
+.logo svg{height:64px;width:auto;display:block}
+.fine{font:500 26px/1.35 var(--f-t);color:var(--ink2);white-space:nowrap}
+.note{font:500 27px/1.3 var(--f-t);color:var(--ink2);white-space:nowrap}
+.note.dark{color:#cfd8f0}
+.title{font:800 76px/1.04 var(--f-d);letter-spacing:-.025em;color:var(--ink);text-align:center;width:1600px}
+.kick{font:600 30px/1 var(--f-t);letter-spacing:.08em;text-transform:uppercase;color:var(--brandDeep)}

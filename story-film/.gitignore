@@ -1,0 +1,8 @@
+# Rebuildable or large: never committed (see README.md). Anchored to this folder.
+/node_modules/
+/.venv/
+/.cache/
+/out/
+/audio/lines/
+/audio/mix.wav
+__pycache__/
