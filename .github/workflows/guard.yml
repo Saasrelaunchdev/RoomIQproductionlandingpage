@@ -1,0 +1,27 @@
+name: guard
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Compare with the version before this push
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -n "$BASE" ] && [ "$BASE" != "0000000000000000000000000000000000000000" ] && git cat-file -e "$BASE:index.html" 2>/dev/null; then
+            OLD=$(git show "$BASE:index.html" | grep -o 'page-version" content="[0-9]*' | grep -o '[0-9]*$' || echo 0)
+            NEW=$(grep -o 'page-version" content="[0-9]*' index.html | grep -o '[0-9]*$')
+            if ! git diff --quiet "$BASE" HEAD -- index.html && [ "$NEW" -le "${OLD:-0}" ]; then
+              echo "index.html changed but page-version did not go up ($OLD -> $NEW)"; exit 1
+            fi
+          fi
+      - run: node guard/check.mjs --offline
