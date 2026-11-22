@@ -59,21 +59,22 @@ export async function build({ F, S, THREE, kit, config }) {
     </div>
     <div class="foot"><span class="send">${SVG.send}Send offer</span></div>
   </div>`);
+  // the same card after the turn: the page's own ledger, the napkin's numbers struck, RoomIQ's evidence beside each
   const napW = mk(`<div class="nap">
-    <div class="kick">The same formula</div>
-    <h3>1207 Greenway Drive, room by room</h3>
-    <div class="fx"><span class="on">Price</span><span class="on x">×</span><span class="on">rooms</span><span class="on x">×</span><span class="on">occupancy</span><span class="on x">× 4.35 weeks</span></div>
+    <div class="kick brand"><svg viewBox="0 0 136 30" aria-hidden="true"><use href="#logo-h"/></svg>The RoomIQ version</div>
+    <h3>What could the house earn by the room?</h3>
+    <div class="fx"><span class="on">6 rooms</span><span class="on x">×</span><span class="on">rent</span><span class="on x">×</span><span class="on">occupancy</span><span class="on x">× 4.35 weeks</span><span class="on" style="margin-left:auto;color:#0B7A57">${USE('i-check')}</span></div>
+    <div class="res endrow"><span class="end">Same formula. Four inputs you can check.</span></div>
     <div class="rows">
-      <div class="nr r1"><span class="k">Rent per room</span><span class="v">$224/wk</span><span class="e">${USE('i-check')}<span>By bath type, from observed rooms nearby</span></span></div>
-      <div class="nr r2"><span class="k">Occupancy</span><span class="v">86.5%</span><span class="e">${USE('i-check')}<span>Observed in comparable rooms</span></span></div>
-      <div class="nr r3"><span class="k">Supply nearby</span><span class="v">17</span><span class="e">${USE('i-check')}<span>Counted within about 3 miles</span></span></div>
-      <div class="nr r4"><span class="k">Confidence</span><span class="v">Medium</span><span class="e">${USE('i-check')}<span>14 comps, a median 1.6 mi away</span></span></div>
+      <div class="nr r1"><span class="k">Rent per room</span><span class="v struck">$200/wk</span><span class="e">${USE('i-check')}<span>By bath type and size, from observed rooms nearby</span></span></div>
+      <div class="nr r2"><span class="k">Occupancy</span><span class="v struck">90%</span><span class="e">${USE('i-check')}<span>Observed in comparable rooms, with fill times</span></span></div>
+      <div class="nr r3"><span class="k">Supply nearby</span><span class="v struck">?</span><span class="e">${USE('i-check')}<span>Counted and mapped within about 3 miles</span></span></div>
+      <div class="nr r4"><span class="k">Confidence</span><span class="v struck">?</span><span class="e">${USE('i-check')}<span>Labeled, with the comps and their distance</span></span></div>
     </div>
-    <div class="foot"><span class="end">Same formula. Four inputs you can check.</span><span class="send">${SVG.send}Send offer</span></div>
+    <div class="foot"><span class="end" style="font-size:34px;color:var(--ink2)">Every number with its evidence</span><span class="send">${SVG.send}Send offer</span></div>
   </div>`);
-  const deal = mk(`<div class="deal"><div class="h">Test the deal<span>with your own costs</span></div>
-    <div class="row"><span class="t">${USE('i-check')}Cash flow</span><span class="t">${USE('i-check')}Cash-on-cash</span><span class="t">${USE('i-check')}DSCR</span><span class="t">${USE('i-check')}Cap rate</span></div>
-    <div class="n">Informational only. Not financial or lending advice.</div></div>`);
+  // the deal, on the real Deal Calculator, with the page's own words for it
+  const dealCard = mk(`<div class="dealcard"><div class="t"><b>5</b><span>Carry it into the deal</span></div><p>Cash flow, cash-on-cash, DSCR and cap rate under your own assumptions.</p><small>Informational only. Not financial or lending advice.</small></div>`);
   const cursor = mk(`<div class="cursor">${SVG.cursor}</div>`);
   const tapEl = mk('', 'tap');
   const sentL = mk(`<span class="pill am big">${SVG.send}Offer sent<span class="sub" style="color:var(--signalText)">· on two guesses</span></span>`);
@@ -82,7 +83,7 @@ export async function build({ F, S, THREE, kit, config }) {
   const sold = mk(`<span class="pill navy big">${USE('i-check')}The house is yours</span>`);
   const vac = [0, 1].map(() => mk(`<span class="rc vac">${SVG.bed}<span>Vacant · week <b class="num">1</b></span></span>`));
   const countL = mk(`<span class="count am"><b class="num">0</b><span>houses renting rooms<small>within about 3 miles</small></span></span>`);
-  const countR = mk(`<span class="count cy"><b class="num">0</b><span>active properties<small>within about 3 mi, counted</small></span></span>`);
+  const countR = mk(`<span class="count cy"><b class="num">0</b><span>houses renting rooms<small>within about 3 miles, mapped</small></span></span>`);
   const pins = coliving.map(() => mk('', 'pin'));
   const roomChips = H.rooms.map((r, i) => mk(i < 2 ? `<span class="rc pv">${SVG.bath}Private bath</span>`
     : i < 5 ? `<span class="rc">${SVG.bath}Shared bath</span>` : `<span class="rc vac">${SVG.alert}Room 6 not entered</span>`));
@@ -99,38 +100,33 @@ export async function build({ F, S, THREE, kit, config }) {
   </div>`);
   const costOff = cost.querySelector('.off b');
 
-  // the product's screens (the page's own previews, demo data) in slabs, each with its caption
-  const slab = (file, extra = '') => mk(`<div class="slab"><div class="scr"><img src="${MEDIA}${file}" alt="">${extra}</div><div class="proof">Product preview · demo data · web app</div></div>`);
-  const slabLoc = slab('location-screen-1920.webp', `
-    <div class="typed" style="left:26.1%;top:38.6%;width:52%;height:3.2%;padding-left:2.6%"><span class="tx"></span><i></i></div>
-    <div class="hl ring1" style="left:64.5%;top:49.6%;width:19.4%;height:31.6%;border-radius:50%"></div>
-    <div class="hl cnt" style="left:79.9%;top:44.2%;width:15.1%;height:2.9%"></div>`);
-  const slabBase = slab('baseline-screen-1920.webp', `<div class="hl mixhl" style="left:22.3%;top:62.5%;width:36.2%;height:35%"></div>`);
-  const slabFc = slab('forecast-screen-1920.webp', `<div class="wash" style="background:rgba(255,255,255,.18)"></div>`);
-  const locTyped = slabLoc.querySelector('.tx');
-  const locRing = slabLoc.querySelector('.ring1'), locCnt = slabLoc.querySelector('.cnt');
-  const mixHl = slabBase.querySelector('.mixhl');
-  // dots on the preview's supply map (measured on the image), so each can light as it is counted
-  const DOTS = [[70.6, 53.4], [75.1, 53.2], [79.1, 55.6], [65.9, 55.7], [77.5, 58.3], [80.6, 60.8], [66.0, 61.2], [71.4, 60.6], [65.5, 64.6],
-    [82.0, 66.0], [66.5, 67.7], [70.0, 69.6], [78.2, 69.6], [67.7, 73.4], [76.3, 73.4], [72.6, 75.5], [80.7, 73.4]];
-  const dotEls = DOTS.map(([x, y]) => { const d = document.createElement('div'); d.className = 'dotring'; d.style.left = x + '%'; d.style.top = y + '%'; d.style.opacity = '0'; slabLoc.querySelector('.scr').appendChild(d); return d; });
+  // the product, on REAL screens of the RoomIQ web app (the page's own, cleaned for public use), each cropped to what the
+  // line names and captioned the way the page captions real screens. No demo figure is ever typed onto a real screen.
+  const REAL = 'Real screen · RoomIQ web app · Nov 2026', HID = ' · personal details hidden';
+  const real = (file, { w = 1300, ar, top = 0, cap = REAL, extra = '' }) => mk(`<div class="real" style="width:${w}px"><div class="scr" style="aspect-ratio:${ar}"><img src="${MEDIA}${file}" alt="" style="top:${top}%">${extra}</div><div class="proof">${cap}</div></div>`);
+  // the Predictor's first step, cropped to the steps and the address field (the address itself is hidden)
+  const r11 = real('real11-screen-1920.webp', { ar: '1920/730', cap: REAL + HID, extra: '<div class="hl addr" style="left:20%;top:89%;width:76.5%;height:8.5%"></div>' });
+  // the baseline profile: the bathroom mix
+  const r12 = real('real12-screen-779.webp', { w: 860, ar: '779/590', cap: REAL + HID, extra: '<div class="hl bath" style="left:3.6%;top:53%;width:93%;height:44%"></div>' });
+  // the Analyzer's room segments: rent and 90-day occupancy by bath and size
+  const r07 = real('real07-screen-1500.webp', { ar: '1500/470', extra: '<div class="hl seg" style="left:4%;top:2%;width:73.5%;height:22%"></div><div class="hl seg2" style="left:4%;top:38%;width:73.5%;height:55%"></div>' });
+  // the forecast, cropped to its result card: the labels, the revenue, the formula, the comps
+  const r14 = real('real14-screen-1920.webp', { ar: '1920/653' });
+  // the Deal Calculator, whole: its scenarios light on "test the deal", its purchase price and closing costs on "your own costs"
+  const r15 = real('real15-screen-1920.webp', { ar: '1920/1094', extra: '<div class="hl scn" style="left:39.6%;top:23.4%;width:21.6%;height:6.7%"></div><div class="hl buy" style="left:5.1%;top:73.9%;width:27.7%;height:6.5%"></div><div class="hl cls" style="left:33.2%;top:89.4%;width:27.7%;height:6.5%"></div>' });
+  const hsp = (n, label, cls = '') => mk(`<div class="hs2 ${cls}"><span class="n">${n}</span><span class="ln"></span><span class="lb">${label}</span></div>`);
+  const hs = [hsp(1, 'The formula, printed'), hsp(2, 'Comps and their distance'), hsp(3, 'Support and confidence')];
+  const thin = mk(`<div class="thinlift"><div class="chips"><span class="chip fb">Fallback support</span><span class="chip lo">Confidence Low</span></div>
+    <p>The local evidence was sparse, so RoomIQ used <b>fallback market support</b>. Median comp distance: <b>82.88 mi</b>.</p></div>`);
 
-  // lifted cards: crisp recreations of a region of the product
-  const lift = mk(`<div class="lift">
-    <div class="chips"><span class="chip ok c1">Local support</span><span class="chip c2">Confidence Medium</span></div>
-    <div class="k">Monthly revenue</div>
-    <div class="big"><b class="num">$5,057</b><span>/mo</span></div>
-    <div class="fml">Price x rooms x occupancy x 4.35 weeks = <b>$5,057</b></div>
-    <div class="why">Found <b>14 comps</b> near the address, a median <b>1.6 mi</b> away, so it used <b>local support</b>.</div>
-    <div class="nx">${SVG.alert}<div><b>The one input to check</b><span>Only 5 of 6 bedrooms have a room entry, so it uses a typical room for the sixth.</span></div></div>
-  </div>`);
-  const liftBig = lift.querySelector('.big b'), liftFml = lift.querySelector('.fml'), liftWhy = lift.querySelector('.why');
-  const liftC1 = lift.querySelector('.c1'), liftC2 = lift.querySelector('.c2'), liftNx = lift.querySelector('.nx');
-  const mix = mk(`<div class="mix"><div class="k">Room-level detail</div><h4>Room mix</h4>
-    ${[['Room 1', '180 sq ft', 'Private bath'], ['Room 2', '165 sq ft', 'Private bath'], ['Room 3', '150 sq ft', 'Shared bath'], ['Room 4', '140 sq ft', 'Shared bath'], ['Room 5', '120 sq ft', 'Shared bath']]
-      .map(([a, b, c], i) => `<div class="mr m${i}"><b>${a}</b><span>${b}</span><span class="${i < 2 ? 'pb' : ''}">${c}</span></div>`).join('')}
-    <div class="mr add m5"><b style="color:var(--signalText)">Room 6</b><span></span><span>Not entered yet</span></div></div>`);
-  const mixRows = [...mix.querySelectorAll('.mr')];
+  // the brand: the logo in the corner, and the journey through the product
+  const logoBug = mk(`<div class="bug"><svg viewBox="0 0 136 30" aria-hidden="true"><use href="#logo-h"/></svg></div>`);
+  const rail = mk(`<div class="rail">
+    ${['Address', 'Rooms and baths', 'Comparable rooms', 'The estimate', 'The deal'].map((x, i) => `${i ? '<span class="sep"></span>' : ''}<span class="st"><b>${i + 1}</b>${x}</span>`).join('')}</div>`);
+  const railSteps = [...rail.querySelectorAll('.st')];
+  // the turn: from guesswork to a defensible offer
+  const turnTitle = mk(`<div class="tt">From <em>guesswork</em> to <b>a defensible offer</b>.</div>`);
+  const wipe = mk('', 'wipe');
 
   // the close: the page's hero, rebuilt at film size
   const heroHead = mk(`<div class="herohead"><div class="eb">For co-living operators and investors</div>
@@ -165,6 +161,8 @@ export async function build({ F, S, THREE, kit, config }) {
   const at = (card, sel) => { const c = card.querySelector(sel); let x = c.offsetWidth / 2, y = c.offsetHeight / 2, n = c;
     while (n && n !== card) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return [x, y]; };
   const btnL = at(napL, '.send'), btnW = at(napW, '.send');
+  // the two napkin cards line up row for row, so the turn can wipe one into the other
+  napW.querySelector('.res').style.height = napL.querySelector('.res').offsetHeight + 'px';
 
   // ------------------------------------------------------------------ helpers used by the shots
   const T = (id, word, n) => w(id, word, n);
@@ -207,6 +205,17 @@ export async function build({ F, S, THREE, kit, config }) {
     p.position.set(x, 0, z); p.rotation.y = hd;
     pose(p, { walk: (t - t0) * speed, walking: k > 0 && k < 1 ? 1 : 0 });
   }
+  // the journey rail: the step on screen in cyan, the steps before it checked
+  function railShow(step, o) {
+    if (o <= 0.002) return;
+    railSteps.forEach((el, i) => { el.className = 'st' + (i < step ? ' done' : i === step ? ' on' : ''); });
+    show(rail, { x: W - 40, y: 34, ax: 1, ay: 0, o, z: 35 });
+  }
+  // a point (px, py in percent of the image) on a flat real screen shown with show() at (x, y), scale sc, centred
+  const onReal = (el, { x, y, s: sc = 1 }, px, py) => {
+    const scr = el.querySelector('.scr'), w0 = el._w, h0 = el._h;
+    return [x - 0.5 * w0 * sc + (px / 100) * scr.offsetWidth * sc, y - 0.5 * h0 * sc + (py / 100) * scr.offsetHeight * sc];
+  };
   // houses of the seventeen, in the order they are counted (nearest first)
   const pinAt = (i) => house3(coliving[i], 3.0);
 
@@ -311,13 +320,13 @@ export async function build({ F, S, THREE, kit, config }) {
   function offerCard(t, card, btn, sent, tapAt, opts) {
     const place = { x: W / 2, y: 100, s: 0.94, ay: 0 };
     const tc = inOut(t, tapAt - 1.4, tapAt + 1.2, 0.4, 0.3);
+    const [bx, by] = inside(card, { ...place }, btn);
     if (tc > 0) {
-      const [bx, by] = inside(card, { ...place }, btn);
       const k = ease.inOut(prog(t, tapAt - 1.3, tapAt - 0.1));
       show(cursor, { x: lerp(bx + 260, bx + 14, k), y: lerp(by + 170, by + 22, k), ax: 0.1, ay: 0.06, o: tc, z: 30 });
       if (t > tapAt - 0.08) show(tapEl, { x: bx, y: by, s: 0.4 + 0.9 * prog(t, tapAt - 0.08, tapAt + 0.45), o: 1 - prog(t, tapAt + 0.05, tapAt + 0.5), z: 29 });
     }
-    show(sent, { x: W / 2, y: 990, o: fade(t, tapAt + 0.25) * gone(t, tapAt + 2.4), s: pop(t, tapAt + 0.25), z: 31 });
+    show(sent, { x: W / 2, y: by + 74, o: fade(t, tapAt + 0.25) * gone(t, tapAt + 2.4), s: pop(t, tapAt + 0.25), z: 31 });
     return place;
   }
   F.shot(s('C1') - 0.4, 'offer-lost', (t) => {
@@ -405,7 +414,7 @@ export async function build({ F, S, THREE, kit, config }) {
       show(pins[i], { x, y, o: k, s: pop(t, at, 0.35) });
     });
     countL.querySelector('b').textContent = String(n);
-    show(countL, { x: W / 2, y: 120, o: fade(t, s('C3') + 0.1), s: pop(t, s('C3') + 0.1) });
+    show(countL, { x: W / 2, y: 120, o: fade(t, s('C3') + 0.1), s: pop(t, s('C3') + 0.1), z: 20 });
     // renters on the streets, walking to those houses
     extra.forEach((p, i) => {
       p.visible = true;
@@ -444,33 +453,48 @@ export async function build({ F, S, THREE, kit, config }) {
     F.setCam([hx + 21, 56, 55], [hx - 1, 0, hz - 1], 26);
     F.veilTo(1);
     napkin(t, {
-      o: fade(t, s('D2') - 0.35, 0.4), y: 120, sc: 0.94, terms: 6, res: 1, rows: 4, fxOk: fade(t, T('D2', 'fine') - 0.2),
+      o: fade(t, s('D2') - 0.35, 0.4), y: 205, sc: 0.94, terms: 6, res: 1, rows: 4, fxOk: fade(t, T('D2', 'fine') - 0.2),
       glowNums: inOut(t, T('D2', 'numbers') - 0.2, s('E1') - 0.5, 0.4, 0.3), ghost: 2.0 * ease.out(prog(t, T('D2', 'nothing') - 0.3, T('D2', 'behind') + 0.4)),
     });
   });
 
   // ================================================================== 11. RoomIQ puts evidence behind each of those numbers, before you make the offer.
+  // The turn, problem to solution: on "RoomIQ" the title arrives; on "evidence" a cyan wipe turns the napkin card into
+  // the RoomIQ version, the empty boxes behind each number filled with its evidence. On "before" the film rewinds to the
+  // town before the offer, and the RoomIQ tile lands by the house.
   F.shot(s('E1') - 0.6, 'turn', (t) => {
-    const a = s('E1') - 0.6, ev = T('E1', 'evidence');
+    const ev = T('E1', 'evidence'), rw = T('E1', 'before') - 0.35;
     S.setMood(0, [hx, 0, hz], 22);
-    F.setCam(keys(t, [[a, [hx + 2, 7.2, 18.5]], [s('F1'), [hx + 1, 9, 22], 'inOut']]), [hx - 2.6, 1.6, hz + 0.8], 26);
-    F.veilTo(1 - ease.inOut(prog(t, a, a + 0.6)));
-    // the rewind: the Sold rider lifts back off the sign
-    sign.rider.visible = t < a + 0.7;
-    sign.rider.position.y = lerp(1.48, 3.6, ease.in(prog(t, a + 0.05, a + 0.6)));
+    F.setCam(keys(t, [[rw, [hx + 2, 7.2, 18.5]], [s('F1'), [hx + 1, 9, 22], 'inOut']]), [hx - 2.6, 1.6, hz + 0.8], 26);
     for (const c of cars) c.visible = false;
-    show(before, { x: W / 2, y: 985, o: inOut(t, a + 0.25, ev - 0.1, 0.3, 0.35), s: pop(t, a + 0.25) });
-    // the mark drops in beside the house, the wordmark above it
-    tile.visible = true;
-    const drop = prog(t, s('E1') - 0.25, s('E1') + 0.45);
+    F.veilTo(1 - ease.inOut(prog(t, rw, rw + 0.6)));
+    const cardO = gone(t, rw - 0.05, 0.4);
+    // the napkin, as D2 left it, and the RoomIQ version wiping over it
+    napkin(t, { o: cardO, y: 205, sc: 0.94, terms: 6, res: 1, rows: 4, fxOk: 1, ghost: 2 });
+    const wk = ease.inOut(prog(t, ev - 0.15, ev + 1.2));
+    if (wk > 0) {
+      napW.querySelector('.foot').style.display = 'none';
+      napW.style.clipPath = `inset(-40px ${(100 - wk * 100).toFixed(2)}% -40px -40px)`;
+      show(napW, { x: W / 2, y: 205, ay: 0, s: 0.94, o: cardO, z: 6 });
+      const left = W / 2 - 0.5 * napW._w * 0.94, h = napW.offsetHeight * 0.94;
+      wipe.style.height = h.toFixed(0) + 'px';
+      show(wipe, { x: left + wk * napW._w * 0.94, y: 205, ay: 0, o: inOut(t, ev - 0.15, ev + 1.35, 0.15, 0.3) * cardO, z: 7 });
+    }
+    show(turnTitle, { x: W / 2, y: 112, o: fade(t, T('E1', 'RoomIQ') - 0.1) * cardO, s: 0.97 + 0.03 * ease.out(prog(t, T('E1', 'RoomIQ') - 0.1, T('E1', 'RoomIQ') + 0.6)) });
+    // the rewind: the Sold rider lifts off; the house is for sale again
+    sign.rider.visible = t < rw + 0.75;
+    sign.rider.position.y = lerp(1.48, 3.6, ease.in(prog(t, rw + 0.1, rw + 0.7)));
+    show(before, { x: W / 2, y: 862, o: inOut(t, rw + 0.35, s('F1') + 0.8, 0.3, 0.35), s: pop(t, rw + 0.35) });
+    // the RoomIQ tile lands beside the house, its name beside it
+    tile.visible = t > rw + 0.2;
+    const drop = prog(t, rw + 0.35, rw + 1.05);
     tile.position.set(hx - 7.2, lerp(11, 3.6, ease.outBack(drop)), hz + 1.9);
     tile.rotation.y = -0.45 + 0.35 * ease.out(drop);
-    const [tx, ty] = F.projOf(tile, 1.4);
-    show(wm, { x: tx + 105, y: ty - 6, ax: 0, ay: 0.5, o: fade(t, s('E1') + 0.25), s: pop(t, s('E1') + 0.25) });
-    F.rings(tx, ty, t, s('E1') + 0.35, s('E1') + 1.6);
-    // the product's window slides in, captioned as a preview
-    const sl = ease.outQuint(prog(t, ev - 0.15, ev + 0.75));
-    tilt(slabLoc, { x: lerp(2400, 1380, sl), y: 540, s: 0.72, o: sl, ry: -14, rx: 4 });
+    if (t > rw + 0.2) {
+      const [tx, ty] = F.projOf(tile, 1.4);
+      show(wm, { x: tx + 105, y: ty - 6, ax: 0, ay: 0.5, o: fade(t, rw + 0.8), s: pop(t, rw + 0.8) });
+      F.rings(tx, ty, t, rw + 0.95, rw + 2.2);
+    }
   });
 
   // ================================================================== 12. Type in the address, and it counts and maps the co-living houses within about three miles.
@@ -481,16 +505,14 @@ export async function build({ F, S, THREE, kit, config }) {
       keys(t, [[a, [hx - 2.6, 1.6, hz + 0.8]], [T('F1', 'counts') - 0.4, [hx + 13, 0, hz - 4], 'inOut'], [b, [hx + 13, 0, hz - 4]]]), 28);
     tile.visible = true; tile.position.set(hx - 7.2, 3.6, hz + 1.9); tile.rotation.y = -0.1;
     show(wm, { ...(() => { const [tx, ty] = F.projOf(tile, 1.4); return { x: tx + 105, y: ty - 6 }; })(), ax: 0, ay: 0.5, o: gone(t, s('F1') + 0.1, 0.5) });
-    // typing the address into the screen's search field
-    const typed = '1207 Greenway Drive, Lakeview';
-    const n = Math.round(typed.length * prog(t, s('F1') + 0.05, T('F1', 'address') + 0.45));
-    locTyped.textContent = typed.slice(0, n);
+    for (const c of cars) c.visible = false;
+    railShow(0, fade(t, s('F1') - 0.1));
+    // the real Predictor slides in: the address field lights on "Type ... address"
+    const sl = ease.outQuint(prog(t, a, a + 0.8));
+    r11.querySelector('.addr').style.opacity = inOut(t, s('F1') - 0.05, T('F1', 'counts') + 0.4, 0.25, 0.4).toFixed(3);
+    tilt(r11, { x: lerp(2300, 1395, sl), y: 600, s: 0.68, o: sl, ry: -12, rx: 3 });
+    // the same count on the made-up town: the cyan ring, a pin on each of the seventeen
     const counts = T('F1', 'counts');
-    locRing.style.opacity = fade(t, counts - 0.1).toFixed(3);
-    dotEls.forEach((d, i) => { d.style.opacity = fade(t, counts + i * 0.09, 0.2).toFixed(3); });
-    locCnt.style.opacity = fade(t, T('F1', 'maps') + 0.2).toFixed(3);
-    tilt(slabLoc, { x: 1380, y: 540, s: 0.72, o: 1, ry: -14, rx: 4 });
-    // the same count on the town: the cyan ring, a pin on each of the seventeen
     ring(ease.inOut(prog(t, counts - 0.1, counts + 1.4)), { cls: 'ring cy', fill: 0.9 * fade(t, counts + 0.8, 0.6) });
     let c = 0;
     coliving.forEach((h, i) => {
@@ -501,12 +523,12 @@ export async function build({ F, S, THREE, kit, config }) {
       show(pins[i], { x, y, o: k, s: pop(t, at2, 0.3) });
     });
     countR.querySelector('b').textContent = String(c);
-    show(countR, { x: 470, y: 980, o: fade(t, T('F1', 'maps')), s: pop(t, T('F1', 'maps')) });
+    show(countR, { x: 40, y: 132, ax: 0, ay: 0, o: fade(t, T('F1', 'maps')), s: pop(t, T('F1', 'maps')), z: 20 });
   });
 
   // ================================================================== 13. Add each room and its bath, and the rent and occupancy come from comparable rooms nearby.
   F.shot(s('F2') - 0.35, 'rooms', (t) => {
-    const a = s('F2') - 0.35, b = s('F3') - 0.35;
+    const a = s('F2') - 0.35, b = s('F3') - 0.35, sw = T('F2', 'rent') - 0.25;
     S.setMood(0, [hx, 0, hz], 16);
     for (const c of cars) c.visible = false;
     F.setCam(keys(t, [[a, [hx + 4.5, 12.5, 9.5]], [b, [hx + 3.8, 13.0, 8.2], 'inOut']]), [hx + 3.4, 0, hz - 0.2], 30);
@@ -526,34 +548,43 @@ export async function build({ F, S, THREE, kit, config }) {
       const [x1, y1] = F.proj(hx, 1.2, hz);
       F.beam([x0, y0], [x1, y1], ease.inOut(prog(t, cmp + i * 0.12, cmp + 0.7 + i * 0.12)), { lift: 0.25, o: gone(t, b - 0.3, 0.3) });
     }
-    // the room mix, lifted from the baseline screen
-    mixRows.forEach((r, i) => { r.style.opacity = fade(t, T('F2', 'room') - 0.2 + i * 0.32, 0.25).toFixed(3); });
-    show(mix, { x: 1440, y: 545, o: fade(t, s('F2') - 0.1), s: 0.96 });
+    railShow(t < sw + 0.2 ? 1 : 2, 1);
+    // the real baseline profile, its bathroom mix lit on "bath"; then the real Analyzer's rooms by bath and size
+    const k12 = ease.outQuint(prog(t, a + 0.1, a + 0.8)) * gone(t, sw, 0.35);
+    r12.querySelector('.bath').style.opacity = fade(t, T('F2', 'bath') - 0.2).toFixed(3);
+    show(r12, { x: 1450, y: 590, o: k12, s: 0.98 });
+    const k07 = ease.outQuint(prog(t, sw + 0.1, sw + 0.8));
+    r07.querySelector('.seg').style.opacity = fade(t, T('F2', 'occupancy') - 0.1).toFixed(3);
+    r07.querySelector('.seg2').style.opacity = fade(t, T('F2', 'comparable') - 0.1).toFixed(3);
+    show(r07, { x: 1405, y: 600, o: k07, s: 0.68 });
   });
 
   // ================================================================== 14. Then it prints the estimate with its formula, its comps, and a label for how sure it is.
+  // ================================================================== 14b. And when the evidence is thin, it says so.
   F.shot(s('F3') - 0.35, 'forecast', (t) => {
-    const a = s('F3') - 0.35;
+    const a = s('F3') - 0.35, th = s('F4') - 0.2;
     S.setMood(0, [hx, 0, hz], 16);
     F.setCam([hx + 3.8, 13.0, 8.2], [hx + 3.4, 0, hz - 0.2], 30);
     openHouse(1, 1);
-    for (let i = 0; i < 5; i++) room(i, 'cyan', 1);
     F.veilTo(ease.inOut(prog(t, a, a + 0.5)));
-    const sl = ease.outQuint(prog(t, a + 0.1, a + 0.8));
-    tilt(slabFc, { x: lerp(1500, 1180, sl), y: 520, s: 0.72, o: sl, ry: -16, rx: 6, rz: 1, z: 5 });
-    const lk = ease.outBack(prog(t, T('F3', 'prints') - 0.1, T('F3', 'prints') + 0.5));
-    const v = 5057 * ease.out(prog(t, T('F3', 'estimate') - 0.1, T('F3', 'estimate') + 0.8));
-    liftBig.textContent = money(v);
-    liftFml.style.opacity = fade(t, T('F3', 'formula') - 0.15).toFixed(3);
-    if (t < T('F3', 'formula') - 0.15) liftFml.style.display = 'none';
-    liftWhy.style.opacity = fade(t, T('F3', 'comps') - 0.15).toFixed(3);
-    if (t < T('F3', 'comps') - 0.15) liftWhy.style.display = 'none';
-    liftC1.style.opacity = fade(t, T('F3', 'comps')).toFixed(3);
-    liftC2.style.opacity = fade(t, T('F3', 'sure') - 0.1).toFixed(3);
-    liftC2.style.boxShadow = t > T('F3', 'sure') - 0.1 ? `inset 0 0 0 2px var(--lineStrong),0 0 0 ${(6 * inOut(t, T('F3', 'sure') - 0.1, T('F3', 'sure') + 1.2, 0.2, 0.5)).toFixed(1)}px color-mix(in srgb,var(--brand) 45%,transparent)` : '';
-    liftNx.style.opacity = fade(t, T('F3', 'sure') + 0.45).toFixed(3);
-    if (t < T('F3', 'sure') + 0.45) liftNx.style.display = 'none';
-    show(lift, { x: 700, y: 190, ay: 0, o: clamp(lk * 1.4), s: 0.82 + 0.1 * lk, z: 8 });
+    railShow(3, 1);
+    // the real forecast, flat and large; on "thin" it moves left and the labels lift off it
+    const sl = ease.outQuint(prog(t, a + 0.1, a + 0.8)), zk = ease.inOut(prog(t, th, th + 0.8));
+    const place = { x: lerp(lerp(1500, 960, sl), 720, zk), y: lerp(500, 520, zk), s: lerp(1.16, 0.92, zk) };
+    show(r14, { ...place, o: sl, z: 5 });
+    // the three marks, each on its word (the page's own evidence callouts)
+    const marks = [
+      { el: hs[0], at: T('F3', 'formula') - 0.1, p: [31.2, 55.4] },
+      { el: hs[1], at: T('F3', 'comps') - 0.1, p: [54.4, 84.0] },
+      { el: hs[2], at: T('F3', 'label') - 0.1, p: [26.8, 29.4] },
+    ];
+    marks.forEach(({ el, at, p }) => {
+      const [x, y] = onReal(r14, place, p[0], p[1]);
+      const o = fade(t, at, 0.3) * gone(t, th, 0.3);
+      show(el, { x: x - 23, y, ax: 0, o, s: pop(t, at, 0.4), z: 9 });
+    });
+    // when the evidence is thin, it says so: the labels and the comp distance, lifted, in their own words
+    show(thin, { x: 1400, y: 560, o: fade(t, T('F4', 'thin') - 0.3, 0.35), s: pop(t, T('F4', 'thin') - 0.3, 0.45), z: 10 });
   });
 
   // ================================================================== 15. The same table, the same formula, with its evidence (the moment of truth, won)
@@ -565,32 +596,33 @@ export async function build({ F, S, THREE, kit, config }) {
     pose(OP, { sit: 1, type: 0.6, t });
     const ins = ease.inOut(prog(t, a + 0.9, a + 1.6));
     F.blur3d(6 * ins, 0.25 * ins);
-    // each row's evidence arrives on "every number has its evidence"
+    // every number has its evidence: each row's evidence lights in turn; then the labels are read before the numbers
     const rows = [...napW.querySelectorAll('.nr')];
     rows.forEach((r, i) => {
-      const at = T('G1', 'every') - 0.1 + i * 0.36;
-      r.querySelector('.v').style.opacity = fade(t, at - 0.2).toFixed(3);
-      const ev = r.querySelector('.e'); ev.style.opacity = fade(t, at + 0.1).toFixed(3);
-      // reading the label before the number: each label lights in turn
-      const rl = T('G2', 'label') - 0.15 + i * 0.28;
-      ev.style.color = t > rl && t < rl + 0.9 ? 'var(--brandDeep)' : '';
-      ev.style.textShadow = t > rl && t < rl + 0.9 ? '0 0 18px rgba(0,180,216,.45)' : '';
+      const ev = r.querySelector('.e');
+      const lit = T('G1', 'every') - 0.1 + i * 0.3, rl = T('G2', 'label') - 0.15 + i * 0.28;
+      const on = (t > lit && t < lit + 0.9) || (t > rl && t < rl + 0.9);
+      ev.style.color = on ? 'var(--brandDeep)' : '';
+      ev.style.textShadow = on ? '0 0 18px rgba(0,180,216,.45)' : '';
     });
     const tapAt = T('G3', 'offer');
-    const dk = fade(t, T('G2', 'test') - 0.25, 0.45) * gone(t, s('G3') - 0.45, 0.5);
-    napW.querySelector('.end').style.opacity = fade(t, T('G1', 'evidence') + 0.4).toFixed(3);
-    if (t < T('G1', 'evidence') + 0.4) napW.querySelector('.foot').style.display = 'none';
+    const dk = fade(t, T('G2', 'test') - 0.3, 0.45) * gone(t, s('G3') - 0.4, 0.5);
     napW.querySelector('.send').style.opacity = fade(t, s('G3') - 0.3).toFixed(3);
-    const place = { x: W / 2, y: lerp(120, 90, ease.inOut(dk)), s: lerp(0.94, 0.8, ease.inOut(dk)), ay: 0 };
-    show(napW, { ...place, o: ins });
-    show(deal, { x: W / 2, y: 875, o: dk, s: 0.96 + 0.04 * ease.out(dk) });
+    const place = { x: W / 2, y: 125, s: 0.94, ay: 0 };
+    show(napW, { ...place, o: ins * (1 - dk) });
+    // the deal: the real Deal Calculator, its scenarios and then your own costs lit, and the page's words for it
+    railShow(4, dk);
+    const sl = ease.outQuint(prog(t, T('G2', 'test') - 0.3, T('G2', 'test') + 0.5));
+    [[ '.scn', T('G2', 'test') + 0.2], ['.buy', T('G2', 'own') - 0.2], ['.cls', T('G2', 'own') + 0.1]].forEach(([c, at]) => { r15.querySelector(c).style.opacity = fade(t, at, 0.3).toFixed(3); });
+    show(r15, { x: lerp(800, 735, sl), y: 520, o: dk, s: 0.9 });
+    show(dealCard, { x: 1370, y: 520, ax: 0, o: dk * fade(t, T('G2', 'test') + 0.05, 0.4), s: 0.96 + 0.04 * ease.out(fade(t, T('G2', 'test') + 0.05, 0.4)) });
+    const [bx, by] = inside(napW, place, btnW);
     if (t > s('G3') - 1.5) {
-      const tc = inOut(t, tapAt - 1.3, tapAt + 1.0, 0.4, 0.3);
-      const [bx, by] = inside(napW, place, btnW);
+      const tc = inOut(t, tapAt - 1.0, tapAt + 1.0, 0.35, 0.3);
       const k = ease.inOut(prog(t, tapAt - 1.2, tapAt - 0.1));
       show(cursor, { x: lerp(bx + 240, bx + 14, k), y: lerp(by + 160, by + 22, k), ax: 0.1, ay: 0.06, o: tc, z: 30 });
       if (t > tapAt - 0.08) show(tapEl, { x: bx, y: by, s: 0.4 + 0.9 * prog(t, tapAt - 0.08, tapAt + 0.45), o: 1 - prog(t, tapAt + 0.05, tapAt + 0.5), z: 29 });
-      show(sentW, { x: W / 2, y: 980, o: fade(t, tapAt + 0.25), s: pop(t, tapAt + 0.25), z: 31 });
+      show(sentW, { x: W / 2, y: by + 74, o: fade(t, tapAt + 0.25), s: pop(t, tapAt + 0.25), z: 31 });
     }
   });
 
@@ -645,6 +677,8 @@ export async function build({ F, S, THREE, kit, config }) {
     show(fine2, { x: 150, y: 1022, ax: 0, o: fade(t, T('H1', 'house') + 1.5) * 0.95 });
   });
 
-  // ------------------------------------------------------------------ after the shot: window and room glows follow what it set
-  F.after(() => {});
+  // ------------------------------------------------------------------ after the shot: the logo in the corner, until the close
+  F.after((t) => {
+    show(logoBug, { x: 40, y: 34, ax: 0, ay: 0, o: fade(t, 0.15, 0.6) * gone(t, s('H1') - 0.75, 0.5), z: 40 });
+  });
 }

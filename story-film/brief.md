@@ -13,18 +13,34 @@ Unknown: `{TBD: reason}`.
   (GTM:GTM-BRIEF.md Section 1, "Unit of analysis"), the page's headline is about the house ("See the investment inside
   the house."), and the GTM walkthrough already uses a miniature real-estate town whose houses open and whose rooms
   light (GTM:walkthrough/BRIEF.md, "The open house (recurring motif)").
-- **Medium:** a mix. 3D clay town (the engine's Three.js kit) in the page's palette for the human beats; UI-led for the
-  mechanism, with the page's own product previews (LP:media/*-screen-1920.webp, demo data) floating in tilted slabs as
-  the hero does, and crisp HTML recreations of the regions that land on a spoken word (the revenue card, its formula and
-  labels, the supply count, the room mix). Why: the page's art is product UI in soft 3D slabs (LP:index.html #hero,
-  `.hv-3d`), and every product screen must be a captioned preview on demo data (LP:CLAUDE.md, non-negotiable 3).
-- **Voice:** a warm, grounded American female narrator, calm and plain, Kokoro `af_heart` at about 0.9 speed, local
-  (Kokoro-82M, Apache 2.0). Why: the GTM gives no demographic lead on purpose (housing ad rules; GTM:deliverables/
-  buying_committee.xlsx, Design_Partners, "Demographics: Not used"), the audience is US owner-operators, often couples
-  (GTM:deliverables/icp_dashboard.xlsx, Team Size), and the brand's tone is calm and honest ("A sharper view. Not a
-  crystal ball."). `af_heart` is the best-rated Kokoro voice. ElevenLabs was not used: `api.elevenlabs.io` is closed in
-  this environment without a key. The film re-voices without touching the scenes (the timeline follows
-  `audio/timings.json`).
+- **Medium:** a mix. 3D clay town (the engine's Three.js kit) in the page's palette for the human beats. For the
+  mechanism, since version 2, the page's real screens of the RoomIQ web app (LP:media/real*-screen-*.webp, captured in
+  November 2026, account details and typed addresses hidden): the Predictor's address step (real11), its baseline
+  profile (real12), the Analyzer's rooms by bath and size (real07), a forecast result (real14) and the Deal Calculator
+  (real15), each cropped to what the line names and captioned "Real screen · RoomIQ web app · Nov 2026" (plus
+  "personal details hidden" where the page says so), with numbered callouts as on the page's evidence section. The
+  close rebuilds the page's hero, whose screens are still mockups, captioned as product previews with demo data. Why:
+  since page v2 the page proves the product with real screens (LP:CHANGELOG.md, v2), and the owner asked the film to
+  use them.
+- **Voice:** a male narrator, as the owner asked for version 2, from an open-source model only (the owner's
+  instruction): Kokoro-82M (Apache 2.0, run locally), a blend of `am_fenrir` (0.65; of Kokoro's male voices, the one
+  whose pitch moves most) and `am_michael` (0.35; steadier), at speed 0.9 with a pace per line. Kokoro has no emotion
+  control and reads every line in the same tone, which the owner heard as robotic. `tools/prosody.py` shapes each
+  line's delivery with Praat's pitch-synchronous overlap-add (parselmouth): register, pitch range, a rise or fall across
+  the line, and a lift on the words the line leans on, from an emotion given per line in `script.json` (warm, excited,
+  uneasy, deflated, rueful, serious, bright, focused, earnest, confident, proud). Line medians move between 119 and
+  147 Hz with the emotion. The words are not changed, so the speech-recognition read-back still applies (every line
+  reads back). Version 1 used Kokoro `af_heart`, a female voice. The film re-voices without touching the scenes (the
+  timeline follows `audio/timings.json`).
+
+## Version 2 (2026-11-22): the owner's review
+
+| Asked | Done |
+|---|---|
+| A male voice instead of the female one | Kokoro `am_fenrir` and `am_michael`, blended; open-source only, as asked |
+| A voice that varies its tone with what it says (excited, focused...) | An emotion per line, shaped by `tools/prosody.py` (above), with per-line pace and stressed words |
+| Use the real app screens the page now shows | real11, real12, real07, real14 and real15, cropped and captioned as real screens; no mockup is called real |
+| The logo and name on the film and its elements; highlight the problem-to-solution turn, using what helps from the board (before and after, customer journey) | The logo in the corner throughout and on the RoomIQ version of the card; the turn "From guesswork to a defensible offer." with a wipe from the napkin card to the RoomIQ version; the journey rail (Address, Rooms and baths, Comparable rooms, The estimate, The deal); a new line on thin evidence ("And when the evidence is thin, it says so.") |
 
 ## Ground rules
 
@@ -79,7 +95,11 @@ Unknown: `{TBD: reason}`.
 ## What the GTM screenshots were used for
 
 The 15 app captures in GTM:docs/discovery/screenshots are the source for what the product does and how its screens
-look. They are not shown raw: they carry a signed-in account's name and email, real market names and figures, and three
-of the five first-run defects (the $1,098 forecast on 1 room, Q26; the 22% interest default, Q30; the 5% vacancy
-haircut, Q31), which GTM decision 6 keeps out of every public asset. The film shows the same screens as the page does:
-re-staged on demo data (LP:media), plus HTML recreations of their panels, all captioned as product previews.
+look. They are never shown raw: they carry a signed-in account's name and email, real market names and figures, and
+first-run defects that GTM decision 6 keeps out of public assets. Since version 2 the film shows the page's own cleaned
+copies of the real screens (LP:media/real*), exactly as the page does since its v2, never the raw captures. The page
+chose to show the real forecast with its $1,098, Fallback support and Confidence Low as an honest example of the labels
+(GTM-BRIEF.md Section 5, "sell the labeling"); the film follows it ("And when the evidence is thin, it says so."). The
+22% interest default (Q30) is in no frame. The Deal Calculator's 5% vacancy default (Q31, a possible double count of
+vacancy) is visible on the real screen, as on the page, but the film does not light it: it lights the scenarios, the
+purchase price and the closing costs. Discovery screens 08, 09 and 10 are never used.

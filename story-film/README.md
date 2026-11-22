@@ -1,16 +1,16 @@
 # RoomIQ story film
 
-The film the landing page's hero opens: "See the investment inside the house", 1:57, narrated, made with the
+The film the landing page's hero opens: "See the investment inside the house", 1:58, narrated, made with the
 `landing-story-film` skill (Saasrelaunchdev/Landingpagestoryvideo) from the GTM repo (Saasrelaunchdev/roomIQGTMBuild,
 `main`) and this page. `brief.md` says what it is built from and why; `beats.md` is the beat sheet; `script.json` holds
 every spoken word with the claim or source behind it. The rendered files are in `../media/story-film/` (generated).
 
-Setup once: `npm install`, then `python3 -m venv .venv && .venv/bin/pip install kokoro-onnx soundfile numpy scipy librosa sherpa-onnx`.
+Setup once: `npm install`, then `python3 -m venv .venv && .venv/bin/pip install kokoro-onnx soundfile numpy scipy librosa sherpa-onnx praat-parselmouth`.
 
 The loop for this film:
 
 ```bash
-.venv/bin/python -I tools/voice.py --check   # Kokoro af_heart; every line read back by speech recognition
+.venv/bin/python -I tools/voice.py --check   # Kokoro, male, each line's tone shaped; every line read back
 .venv/bin/python -I tools/mix.py             # music, effects, loudness; read the report
 node tools/beats.mjs                         # a frame per line beside what it must show (out/beats/)
 node tools/render.mjs                        # frames, the fresh-browser check, MP4, WebM, captions, poster
@@ -18,8 +18,13 @@ node tools/stamp.mjs                         # each file's ?v= into ../index.htm
 npm test                                     # claims, captions, timing, freshness, the page and the deploy
 ```
 
-To re-voice with ElevenLabs: save a key for `api.elevenlabs.io` (header `xi-api-key`), set `voice.engine` to
-`elevenlabs` and a `voice_id` in `script.json`, and run the loop from `voice.py` (delete `out/frames/` first).
+The voice is open source, by the owner's choice: Kokoro-82M (Apache 2.0), a blend of `am_fenrir` and `am_michael`
+(`voice.voice` in `script.json`). Kokoro reads every line in one tone, so `tools/prosody.py` shapes each line after it
+is spoken, from the line's `emotion` (a row of `voice.emotions`: `speed`, `shift` in semitones, pitch `range`, `lift`
+across the line), its `stress` words (a pitch rise and a little more level) and its optional `speak` text (the same
+words with the punctuation that sets the pauses, for example an exclamation mark). `voice.py` prints each line's pitch
+before and after; the read-back must still pass. To change a line's tone, change its emotion or that emotion's row and
+run the loop from `voice.py` (delete `out/frames/` first: the timing moves).
 
 The engine's own notes follow.
 

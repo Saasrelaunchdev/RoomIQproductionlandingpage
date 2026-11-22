@@ -134,8 +134,8 @@ class KokoroVoice:
             voice = sum(w * self.k.get_voice_style(n) for n, w in voice.items())
         self.voice = voice
 
-    def say(self, text, prev=None, nxt=None):
-        audio, sr = self.k.create(text, voice=self.voice, speed=self.v.get("speed", 0.9), lang=self.v.get("lang", "en-us"),
+    def say(self, text, prev=None, nxt=None, speed=None):
+        audio, sr = self.k.create(text, voice=self.voice, speed=speed or self.v.get("speed", 0.9), lang=self.v.get("lang", "en-us"),
                                   sentence_pause=self.v.get("sentencePause", 0.3), clause_pause=self.v.get("clausePause", 0.14))
         return np.asarray(audio, dtype=np.float32), sr
 
@@ -150,7 +150,7 @@ class ElevenVoice:
         if not v.get("voice_id"):
             raise SystemExit("script.json voice.voice_id is required for ElevenLabs")
 
-    def say(self, text, prev=None, nxt=None):
+    def say(self, text, prev=None, nxt=None, speed=None):
         body = {"text": text, "model_id": self.v.get("model", "eleven_multilingual_v2"),
                 "voice_settings": {"stability": self.v.get("stability", 0.45), "similarity_boost": self.v.get("similarity", 0.8),
                                    "style": self.v.get("style", 0.1), "use_speaker_boost": True}}
@@ -179,6 +179,42 @@ def recogniser():
     return sherpa_onnx.OfflineRecognizer.from_transducer(
         encoder=f"{d}/encoder.int8.onnx", decoder=f"{d}/decoder.int8.onnx", joiner=f"{d}/joiner.int8.onnx",
         tokens=f"{d}/tokens.txt", model_type="nemo_transducer", num_threads=4)
+
+
+def heard_words(rec, audio, sr):
+    """What the recogniser hears in a clip: [(word, start seconds)] (tokens that begin with a space start a word)."""
+    import librosa
+    y = librosa.resample(audio, orig_sr=sr, target_sr=16000)
+    s = rec.create_stream()
+    s.accept_waveform(16000, y)
+    rec.decode_stream(s)
+    hw = []
+    for tok, t in zip(s.result.tokens, s.result.timestamps):
+        if tok.startswith(" ") or not hw:
+            hw.append([tok.strip(), t])
+        else:
+            hw[-1][0] += tok
+    return [(w, t) for w, t in hw]
+
+
+def stress_times(line, hw):
+    """The heard words a line stresses: a stressed word matches a heard word when their normalised pieces agree
+    ("Seventeen" matches "17", "seventy-five" matches "75%")."""
+    marks = []
+    for sw in line.get("stress", []):
+        ps = words(sw, HEARD)
+        found = None
+        for i, (w, t) in enumerate(hw):
+            for n in (1, 2, 3):   # a word may be heard as two or three ("RoomIQ" as "Room IQ")
+                joined = words(" ".join(x for x, _ in hw[i:i + n]), HEARD)
+                if joined[: len(ps)] == ps:
+                    found = (" ".join(x for x, _ in hw[i:i + n]), t, i + n - 1)
+                    break
+            if found:
+                break
+        if found:
+            marks.append(found)
+    return marks
 
 
 def check(lines, clips, timings):
@@ -239,17 +275,37 @@ def main():
     lines = script["lines"]
     clips, timings = [], []
     t = script.get("leadIn", 1.5)
+    # expressive delivery (tools/prosody.py): per-line emotion, pace and stressed words, when script.json defines them
+    expressive = bool(v.get("emotions"))
+    rec = None
+    if expressive:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))   # this folder's own module, not the cwd
+        import prosody
+        rec = recogniser()
     for i, line in enumerate(lines):
-        said = respell(line["text"], v.get("say"))
-        prev = respell(lines[i - 1]["text"], v.get("say")) if i else None
-        nxt = respell(lines[i + 1]["text"], v.get("say")) if i + 1 < len(lines) else None
-        audio, sr = engine.say(said, prev, nxt)
+        spoken = lambda l: respell(l.get("speak", l["text"]), v.get("say"))
+        said = spoken(line)
+        prev = spoken(lines[i - 1]) if i else None
+        nxt = spoken(lines[i + 1]) if i + 1 < len(lines) else None
+        e = prosody.params(v, line) if expressive else {}
+        audio, sr = engine.say(said, prev, nxt, speed=e.get("speed"))
         audio = trim(audio, sr)
+        mood = ""
+        if expressive:
+            before = prosody.spread(audio, sr)
+            hw = heard_words(rec, audio, sr)
+            marks = stress_times(line, hw)
+            spans = [(t0, hw[j + 1][1] if j + 1 < len(hw) else len(audio) / sr) for _, t0, j in marks]
+            audio = prosody.shape(audio, sr, e, spans)
+            after = prosody.spread(audio, sr)
+            mood = f"  [{line.get('emotion', '-')}: {before[0]:.0f}->{after[0]:.0f} Hz, spread {before[1]:.1f}->{after[1]:.1f} st, stress {','.join(w for w, _, _ in marks) or '-'}]"
+            if len(marks) < len(line.get("stress", [])):
+                mood += f"  (stress not found: {[w for w in line['stress'] if not any(words(w, HEARD)[:1] == words(m[0], HEARD)[:1] for m in marks)]})"
         sf.write(os.path.join(out, "lines", line["id"] + ".wav"), audio, sr, subtype="PCM_16")
         dur = len(audio) / sr
         timings.append({"id": line["id"], "scene": line.get("scene", ""), "start": round(t, 3), "end": round(t + dur, 3), "text": line["text"]})
         clips.append((audio, sr))
-        print(f"{line['id']}: {dur:5.2f}s at {t:6.2f}s  {line['text']}")
+        print(f"{line['id']}: {dur:5.2f}s at {t:6.2f}s  {line['text']}{mood}")
         t += dur + line.get("pause", 0.5)
     total = t + script.get("tail", 2.5)
     sr = clips[0][1]
@@ -266,7 +322,7 @@ def main():
     if "--check" in sys.argv:
         bad = check(lines, clips, timings)
         print("speech check:", "every line reads back as written" if not bad else f"{bad} line(s) differ: fix with voice.say or rewrite")
-    json.dump({"voice": {k: v[k] for k in v if k not in ("key", "heard")}, "sampleRate": sr, "duration": round(total, 3), "lines": timings},
+    json.dump({"voice": {k: v[k] for k in v if k not in ("key", "heard", "emotions")}, "sampleRate": sr, "duration": round(total, 3), "lines": timings},
               open(os.path.join(out, "timings.json"), "w"), indent=1)
     sys.exit(1 if bad else 0)
 

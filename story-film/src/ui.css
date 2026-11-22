@@ -171,6 +171,7 @@ html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--c
 /* The brand */
 .wm{display:flex;align-items:center;gap:26px}
 .wm svg{height:110px;width:auto}
+.wm span{text-shadow:0 0 14px rgba(255,255,255,.95),0 0 36px rgba(255,255,255,.85)}
 .drift{display:inline-flex;align-items:center;padding:14px 26px;border-radius:999px;background:var(--surface);border:3px dashed var(--lineStrong);color:var(--ink2);font:600 34px/1 var(--f-t);white-space:nowrap}
 .drift.am{border-color:color-mix(in srgb,var(--warn) 75%,transparent);background:var(--warnSoft);color:var(--signalText)}
 
@@ -189,3 +190,57 @@ html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:var(--c
 .note.dark{color:#cfd8f0}
 .title{font:800 76px/1.04 var(--f-d);letter-spacing:-.025em;color:var(--ink);text-align:center;width:1600px}
 .kick{font:600 30px/1 var(--f-t);letter-spacing:.08em;text-transform:uppercase;color:var(--brandDeep)}
+
+/* ===== v2: the brand on screen, the journey, the turn, real screens ===== */
+/* The logo, in the corner from the first frame to the close (the end card carries its own) */
+.bug{display:flex;align-items:center;padding:12px 20px 12px 16px;border-radius:18px;background:rgba(255,255,255,.86);box-shadow:0 0 0 1.5px rgba(3,4,94,.08),0 14px 30px -18px rgba(3,4,94,.45)}
+.bug svg{height:44px;width:200px;display:block}
+/* The journey through the product: five steps, the current one in cyan */
+.rail{display:flex;align-items:center;gap:10px;padding:10px 14px 10px 12px;border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 0 0 1.5px var(--lineStrong),0 18px 40px -22px rgba(3,4,94,.5);white-space:nowrap}
+.rail .st{display:inline-flex;align-items:center;gap:10px;padding:9px 18px 9px 10px;border-radius:999px;font:600 26px/1 var(--f-t);color:var(--ink3)}
+.rail .st b{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface2);color:var(--ink3);font:700 20px/1 var(--f-t);box-shadow:inset 0 0 0 2px var(--lineStrong)}
+.rail .st.on{background:var(--brandSoft);color:var(--ink);box-shadow:inset 0 0 0 2.5px var(--brand)}
+.rail .st.on b{background:var(--brand);color:#fff;box-shadow:none}
+.rail .st.done{color:var(--ink2)}
+.rail .st.done b{background:#E0F7EE;color:#0B7A57;box-shadow:inset 0 0 0 2px #A5E5CD}
+.rail .sep{width:22px;height:2px;background:var(--lineStrong)}
+/* The turn: from guesswork to a defensible offer */
+.tt{font:800 64px/1.05 var(--f-d);letter-spacing:-.025em;color:var(--ink);white-space:nowrap}
+.tt em{font-style:normal;color:var(--signalText);text-decoration:line-through;text-decoration-thickness:5px;text-decoration-color:color-mix(in srgb,var(--warn) 80%,transparent)}
+.tt b{color:var(--brandDeep)}
+.wipe{width:10px;border-radius:6px;background:var(--brand);box-shadow:0 0 30px 10px color-mix(in srgb,var(--brand) 55%,transparent)}
+.nap .kick.brand{display:flex;align-items:center;gap:14px}
+.nap .kick.brand svg{height:30px;width:136px}
+.nap .v.struck{color:color-mix(in srgb,var(--signalText) 70%,#fff);text-decoration:line-through;text-decoration-thickness:4px;text-decoration-color:color-mix(in srgb,var(--warn) 85%,transparent);font-size:38px}
+.nap .res.endrow{height:96px;display:flex;align-items:center}
+.nap .res.endrow .end{font:800 44px/1.1 var(--f-d)}
+/* Real screens: cropped to the part that matters, always captioned as real */
+.real{width:1300px}
+.real .scr{position:relative;width:100%;border-radius:20px;overflow:hidden;background:#fff;box-shadow:var(--shadow-device)}
+.real .scr img{position:absolute;left:0;top:0;width:100%;display:block}
+.real .proof{display:inline-flex;margin-top:16px;padding:8px 20px 8px 16px;border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 0 0 1.5px rgba(3,4,94,.1),0 12px 26px -16px rgba(3,4,94,.45)}
+/* Hotspots, as on the page's evidence section: a numbered dot, a line, a label */
+.hs2{display:flex;align-items:center;gap:0}
+.hs2 .n{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--ink);color:#fff;font:700 24px/1 var(--f-t);box-shadow:0 0 0 5px #fff,0 8px 20px -8px rgba(3,4,94,.6)}
+.hs2 .ln{width:46px;height:3px;background:var(--ink)}
+.hs2 .lb{padding:12px 20px;border-radius:14px;background:#fff;border:2px solid var(--lineStrong);font:650 29px/1.15 var(--f-t);color:var(--ink);white-space:nowrap;box-shadow:0 16px 32px -18px rgba(3,4,94,.55)}
+.hs2.sig .n{background:var(--warn);color:var(--night)}
+.hs2.left{flex-direction:row-reverse}
+/* The thin-evidence card, lifted off the real forecast (its own words and labels) */
+.thinlift{width:900px;padding:34px 40px 36px;border-radius:28px;background:#fff;box-shadow:0 0 0 3px var(--warn),0 0 70px 10px color-mix(in srgb,var(--warn) 25%,transparent),0 50px 100px -50px rgba(3,4,94,.6)}
+.thinlift .chips{display:flex;gap:16px;margin-bottom:22px}
+.chip.fb{background:#FEE9EE;color:#8C0F37;box-shadow:inset 0 0 0 2px #F3B4C4}
+.chip.lo{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 2px var(--lineStrong)}
+.thinlift .chip{font-size:34px;padding:14px 26px}
+.thinlift p{margin:0;font:500 30px/1.35 var(--f-t);color:var(--ink2)}
+.thinlift p b{color:var(--ink);font-weight:700}
+/* The deal, beside the real Deal Calculator: the page's own words for it */
+.dealcard{width:500px;padding:32px 36px 34px;border-radius:26px;background:var(--ink);color:#fff;box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 45%,transparent),0 40px 80px -40px rgba(1,0,65,.75)}
+.dealcard .t{display:flex;align-items:center;gap:14px;font:800 42px/1.08 var(--f-d);letter-spacing:-.015em}
+.dealcard .t span{text-wrap:balance}
+.dealcard .t b{display:grid;place-items:center;flex:none;width:46px;height:46px;border-radius:50%;background:var(--brand);color:var(--night);font:700 24px/1 var(--f-t)}
+.dealcard p{margin:18px 0 0;font:500 31px/1.35 var(--f-t);color:#E4EAFB}
+.dealcard small{display:block;margin-top:18px;padding-top:16px;border-top:1.5px solid rgba(255,255,255,.18);font:500 26px/1.3 var(--f-t);color:#B9C5E6}
+/* A big label beside a real screen */
+.lab{padding:16px 26px;border-radius:18px;background:var(--ink);color:#fff;font:650 32px/1.2 var(--f-t);white-space:nowrap;box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 45%,transparent),0 22px 44px -22px rgba(1,0,65,.7)}
+.lab small{display:block;margin-top:8px;font:500 26px/1.2 var(--f-t);color:#cfd8f0}
