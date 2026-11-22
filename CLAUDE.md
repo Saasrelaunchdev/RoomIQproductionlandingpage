@@ -10,7 +10,7 @@ This repo is the page's home. Edit `index.html` here directly; Vercel serves the
 - `media/`: the product previews (AVIF and WebP at several widths) and `media/demo/` (the deal demo's three made-up houses).
 - `fonts/`: Bricolage Grotesque (display) and Instrument Sans (text).
 - `og.png` (the share image, 1200 x 630) and `favicon.svg`.
-- `meta/index.html`: the Meta Ads landing page, served at `/meta`. A paid-traffic version of `index.html`: no menu, one action per variant (`?v=` picks a whitelisted headline that matches the ad; `?v=score` leads with the scorecard), the VSL above the form, sections in the VSL's question order. Its shared CSS (tokens, base, calculator, form, dialogs, scorecard) is copied from `index.html`: change both. Its own facts sit in `SITE` near the top of its script (`metaPixelId`, `formEndpoint`, `vsl`, `coveredMarkets`, `seatsLeft`). The pixel loads only after consent. The ads, the VSL script and the plan behind it live in the GTM repo, `meta-launch/`.
+- The Meta Ads landing page is its own project and repo: `Saasrelaunchdev/roomiqmetaadspage` (served at the root of its own domain). It copies this page's shared CSS (tokens, base, calculator, form, dialogs, scorecard) and the scorecard data: if you change those here, change them there too. Its "See Portfolio and Operator" link lands on this page's `#pricing` section, so keep that id. The ads, the VSL script and the plan behind it live in the GTM repo, `meta-launch/`.
 - The page was first built in `Saasrelaunchdev/RoomIQ-landing-page` (brief, mockup sources, tests, build tools). That repo is history now, read-only.
 
 ## Non-negotiables
