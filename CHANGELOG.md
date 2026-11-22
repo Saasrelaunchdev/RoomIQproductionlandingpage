@@ -2,6 +2,12 @@
 
 Every change to the page gets a new version here, newest first, and the same number in `index.html` (`<meta name="page-version" content="N">`). `guard/check.mjs` refuses a push whose version is not higher than the one on `main`, or that has no entry here.
 
+## v5 (2026-11-22)
+- Built on v4 (captions removed, story film kept).
+- Removed, at the owner's request, the Deal Readiness Scorecard flow inside the page: the quiz dialog (seven questions, score, tier, gaps, email form), its script, its styles, its questions and tiers data, and its scoring arithmetic. The scorecard will be built as a separate tool.
+- Kept the three buttons that opened it: "Score your next deal" in the hero, "Get my Deal Readiness Score" in the final section's scorecard card, and "Score your next deal" in the phone's sticky bar. They link to the tool once `site.scorecardUrl` is set (or their `href` is changed from the placeholder `#`); until then a click does nothing.
+- `guard/features.json`: the in-page scorecard feature is retired, the three buttons are listed as a feature, and the quiz flow is on the `removed` list so it cannot come back from an older copy.
+
 ## v4 (2026-11-22)
 - Built on v3 (the story film), so nothing from it is lost.
 - Removed, at the owner's request, every caption under a screen or illustration: "Product preview · demo data · web app · the operator", "Real screen · RoomIQ web app · Nov 2026" (with or without "personal details hidden") and "Illustration of the feature, not a product screen".

@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="RoomIQ's Property Predictor showing a monthly revenue estimate with its formula and its support and confidence labels.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#FFFFFF">
-<meta name="page-version" content="4">
+<meta name="page-version" content="5">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/bricolage-grotesque-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin>
 <!-- Theme before first paint: the visitor's choice, else ?theme=, else the device's own setting -->
@@ -1063,37 +1063,6 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
 @keyframes check{from{stroke-dashoffset:1}}
 .sent .label{margin-top:8px;color:var(--c-text-2)}
 @media (min-width:600px){.form .row{grid-template-columns:1fr 1fr}}
-/* The scorecard */
-.sc-prog{height:6px;border-radius:3px;background:var(--c-surface-2);overflow:hidden;margin-top:4px}
-.sc-prog i{display:block;height:100%;width:var(--p,0%);border-radius:3px;background:var(--c-grad-forward);transition:width var(--t-reveal) var(--ease-out)}
-.sc-q{margin:6px 0 0;padding:0;border:0;min-width:0}
-.sc-q legend{display:grid;gap:6px;padding:0;margin-bottom:14px}
-.sc-q legend .label{color:var(--c-text-2)}
-.sc-q legend b{font:750 clamp(21px,2.4vw,26px)/1.2 var(--f-display);letter-spacing:-.015em;color:var(--c-heading)}
-.sc-opts{display:grid;gap:8px}
-.sc-opt{display:grid;grid-template-columns:22px 1fr;gap:12px;align-items:center;min-height:52px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--c-line-strong);cursor:pointer;font-size:16px;color:var(--c-heading);transition:border-color var(--t-ui) ease,background-color var(--t-ui) ease}
-.sc-opt input{width:20px;height:20px;margin:0;accent-color:var(--c-primary-600)}
-.sc-opt:has(input:checked){border-color:var(--c-accent);background:color-mix(in srgb,var(--c-accent) 9%,var(--c-bg))}
-.sc-opt:has(input:focus-visible){outline:2px solid var(--focus);outline-offset:2px}
-.sc-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
-.sc-nav .btn{min-height:48px}
-.sc-result{display:grid;gap:14px}
-.sc-result:focus{outline:none}
-.sc-result[hidden],.sc-quiz[hidden]{display:none}
-.sc-score{display:flex;align-items:baseline;gap:10px}
-.sc-score b{font:800 72px/1 var(--f-display);letter-spacing:-.03em;color:var(--c-heading);font-variant-numeric:tabular-nums}
-.sc-score span{color:var(--c-text-2);font-weight:600}
-.sc-tier{display:inline-block;justify-self:start;padding:6px 12px;border-radius:999px;background:color-mix(in srgb,var(--c-accent) 14%,var(--c-bg));border:1px solid color-mix(in srgb,var(--c-accent) 50%,transparent);color:var(--c-accent-text);font:700 14px/1.3 var(--f-text)}
-.sc-msg{color:var(--c-text-2);font-size:16.5px}
-.sc-gh{margin-top:6px;font:700 19px/1.2 var(--f-display);letter-spacing:-.01em}
-.sc-gaps{display:grid;gap:10px;counter-reset:g}
-.sc-gaps li{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:12px 14px;border-radius:12px;background:var(--c-surface-2);font-size:15px;color:var(--c-text)}
-.sc-gaps li::before{counter-increment:g;content:counter(g);display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--c-heading);color:var(--c-bg);font:700 12px/1 var(--f-text)}
-.sc-gaps li b{display:block;margin-bottom:3px;color:var(--c-heading)}
-.sc-out{font-size:13.5px;color:var(--c-text-2)}
-.sc-ctas{margin-top:4px}
-.sc-email{margin-top:10px;padding:18px;border-radius:16px;border:1px solid var(--c-line)}
-.sc-again{justify-self:start;min-height:44px;padding:0 4px;border:0;background:none;color:var(--c-accent-text);font:650 15px/1 var(--f-text);cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 
 /* Reduced transparency: solid header and bar */
 @media (prefers-reduced-transparency:reduce){
@@ -1374,7 +1343,7 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
       <div class="cta-row">
         <div class="cta-btns">
           <a class="btn btn-primary" data-cta="try" data-placement="hero" href="https://roomiq.io/dashboard">Run a free forecast<svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-          <a class="btn btn-line" data-cta="score" data-placement="hero" href="#final">Score your next deal</a>
+          <a class="btn btn-line" data-cta="score" data-placement="hero" href="#">Score your next deal</a>
         </div>
         <p class="label under">Free plan. No card needed. Three forecasts a month.</p>
       </div>
@@ -1836,7 +1805,7 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
       <h3 class="h3">Not ready? Take the Deal Readiness Scorecard.</h3>
       <p>Seven questions, one per screen. A score out of 100, and the three gaps to close before you make an offer.</p>
       <ul class="score-checks" aria-label="What the scorecard checks"><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Rent source</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Fill and supply</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Bath mix</li><li><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Zoning, financing, reserves</li></ul>
-      <a class="btn btn-line" data-cta="score" data-placement="final" href="#final">Get my Deal Readiness Score</a>
+      <a class="btn btn-line" data-cta="score" data-placement="final" href="#">Get my Deal Readiness Score</a>
       <p class="label score-note">No card. No sales call.</p>
     </div>
   </div>
@@ -1866,7 +1835,7 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
 
 <div class="sticky-bar" id="sticky-bar" aria-hidden="true">
   <a class="btn btn-primary" data-cta="try" data-placement="sticky" href="https://roomiq.io/dashboard" tabindex="-1">Run a free forecast</a>
-  <a class="btn btn-line sticky-score" data-cta="score" data-placement="sticky" href="#final" tabindex="-1">Score your next deal</a>
+  <a class="btn btn-line sticky-score" data-cta="score" data-placement="sticky" href="#" tabindex="-1">Score your next deal</a>
 </div>
 
 <!-- The founding-seat application, in a dialog where the visitor is (a sheet on a phone) -->
@@ -1904,45 +1873,6 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
   </div>
 </dialog>
 
-<!-- The Co-Living Deal Readiness Scorecard: seven questions, one per screen, then the score, the tier and the three gaps -->
-<dialog class="dlg dlg-score" id="score-dlg" aria-labelledby="score-h">
-  <div class="dlg-in">
-    <div class="dlg-head"><h2 class="h3" id="score-h">Co-Living Deal Readiness Scorecard</h2><button class="icon-btn dlg-x" type="button" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
-    <div class="sc-quiz" id="sc-quiz">
-      <p class="dlg-lead">Seven questions about your next deal. One per screen.</p>
-      <div class="sc-prog" aria-hidden="true"><i id="sc-bar"></i></div>
-      <form id="sc-form">
-        <fieldset class="sc-q">
-          <legend><span class="label" id="sc-n"></span><b id="sc-text"></b></legend>
-          <div class="sc-opts" id="sc-opts"></div>
-        </fieldset>
-        <div class="sc-nav"><button type="button" class="btn btn-line" id="sc-back">Back</button><button type="submit" class="btn btn-primary" id="sc-next" disabled>Next</button></div>
-      </form>
-    </div>
-    <div class="sc-result" id="sc-result" hidden tabindex="-1">
-      <div class="sc-score"><b id="sc-num">0</b><span>out of 100</span></div>
-      <p class="sc-tier" id="sc-tier"></p>
-      <p class="sc-msg" id="sc-msg"></p>
-      <h3 class="sc-gh">Your three biggest gaps</h3>
-      <ol class="sc-gaps" id="sc-gaps"></ol>
-      <p class="sc-out">Zoning and financing sit outside RoomIQ. This is not legal or financial advice.</p>
-      <div class="cta-btns sc-ctas">
-        <a class="btn btn-primary" id="sc-forecast" data-cta="try" data-placement="scorecard" href="https://roomiq.io/dashboard">Run a free forecast on your address</a>
-        <a class="btn btn-line" id="sc-walk" href="mailto:marcel@roomiq.io?subject=20-minute%20walkthrough" hidden>Book a 20-minute walkthrough</a>
-      </div>
-      <form class="form sc-email" id="sc-email" novalidate>
-        <p class="sc-eh"><b>Want your results and the underwriting checklist by email?</b></p>
-        <div class="field"><label for="sc-mail">Email</label><input id="sc-mail" name="email" type="email" autocomplete="email" aria-describedby="e-sc-mail"><p class="err" id="e-sc-mail"></p></div>
-        <label class="consent"><input type="checkbox" id="sc-consent" aria-describedby="e-sc-consent"><span>You may email me my results and RoomIQ's underwriting checklist.</span></label>
-        <p class="err" id="e-sc-consent"></p>
-        <button class="btn btn-line" type="submit">Email me my results</button>
-        <div class="sent" id="sc-sent" role="status" tabindex="-1" hidden><svg class="sent-ic" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><p><b>Sent. Check your inbox shortly.</b></p><p class="label" data-internal id="sc-sent-note">Preview: no form endpoint is set, so nothing was sent.</p></div></div>
-      </form>
-      <button type="button" class="sc-again" id="sc-again">Start again</button>
-    </div>
-  </div>
-</dialog>
-
 <script>
 (() => {
   "use strict";
@@ -1953,7 +1883,6 @@ html.dlg-open .sticky-bar{transform:translateY(110%)}
   // Words and data from src/content/copy.json (rendered in by tools/build.mjs)
   const T = {"kicker":{"community":"Welcome from {name}. Start with a free forecast.","event":"Welcome from {name}.","podcast":"Heard about RoomIQ on {name}? Welcome.","scorecard":"Your scorecard pointed here. Run the free forecast on your address."},"zoom":"Zoom the screen in or out","placeholder":"Screen to come","money":"{v}","form":{"name":"Please enter your first name.","email":"Please enter an email address, like name@example.com.","homes":"Please choose how many homes you run.","consent":"Please tick the box so we can email you."},"estimate":{"rentValue":"{v}/wk","rentText":"{v} per week","roomsText":"{n} rooms"},"demo":{"perRoom":"/room/wk","of":"of","occupied":"occupied","collects":"Collects","aWeek":"a week","lookInside":"Look inside {house}","pinAria":"Select {house}, {area}, {rent} per room per week","oneHood":"One neighborhood. Three stories.","oneHoodSub":"Asking rent per room, and what each house collects from its occupied rooms every week.","metaTpl":"{area}, {n} rooms, {baths}","occupiedLabel":"Occupied","askingLabel":"Average asking rent","roomByRoom":"Room by room","roomByRoomSub":"Rooms with a private bath ask the most. A vacant room brings in nothing.","tableCaption":"Rooms in {house}, example data","colRoom":"Room","colSize":"Size","colBath":"Bath","colRent":"Rent","colStatus":"Status","statusOccupied":"Occupied","statusVacant":"Vacant","rentFrom":"Rent from occupied rooms:","testDeal":"Test the deal","whatIf":"What if?","startsFrom":"Starts from {house} as listed: {occ} of {n} rooms occupied at {rent}/wk.","sRent":"Rent per room","sRooms":"Occupied rooms","sPrice":"Purchase price","assumes":"Assumes 25% down, a 30-year fixed loan at 7% and operating costs of 30% of rent. In RoomIQ Pro the deal calculator lets you set financing, renovation and running costs yourself.","rentRow":"Rent: {n} {rooms} × {rent}/wk","room":"room","rooms":"rooms","perMonth":"/mo","mortgage":"Mortgage","opCosts":"Operating costs","cashFlow":"Monthly cash flow","coc":"{v}% a year on your down payment","realData":"Explore real market data","houses":[{"id":"porch","name":"The porch house","area":"Near the park","baths":"2 private baths","weeklyRent":210,"purchasePrice":420000,"image":"porch-house","imageAlt":"Blue-grey two-storey house behind a hedge","pin":{"x":37.5,"y":45.4},"rooms":[{"name":"Room 1","size":"Large","bath":"Private","weeklyRent":250,"occupied":true},{"name":"Room 2","size":"Large","bath":"Private","weeklyRent":240,"occupied":true},{"name":"Room 3","size":"Medium","bath":"Shared","weeklyRent":210,"occupied":false},{"name":"Room 4","size":"Medium","bath":"Shared","weeklyRent":200,"occupied":true},{"name":"Room 5","size":"Small","bath":"Shared","weeklyRent":180,"occupied":true},{"name":"Room 6","size":"Small","bath":"Shared","weeklyRent":180,"occupied":true}]},{"id":"corner","name":"The corner house","area":"By the high street","baths":"1 private bath","weeklyRent":190,"purchasePrice":365000,"image":"corner-house","imageAlt":"Two-storey house with a double garage at dusk","pin":{"x":75,"y":26},"rooms":[{"name":"Room 1","size":"Large","bath":"Private","weeklyRent":220,"occupied":true},{"name":"Room 2","size":"Medium","bath":"Shared","weeklyRent":190,"occupied":true},{"name":"Room 3","size":"Medium","bath":"Shared","weeklyRent":185,"occupied":true},{"name":"Room 4","size":"Small","bath":"Shared","weeklyRent":180,"occupied":true},{"name":"Room 5","size":"Small","bath":"Shared","weeklyRent":175,"occupied":true}]},{"id":"garden","name":"The garden house","area":"Along the greenway","baths":"3 private baths","weeklyRent":230,"purchasePrice":495000,"image":"garden-house","imageAlt":"Pale blue two-storey house with a garden and porch","pin":{"x":75.7,"y":86.2},"rooms":[{"name":"Room 1","size":"Large","bath":"Private","weeklyRent":265,"occupied":true},{"name":"Room 2","size":"Large","bath":"Private","weeklyRent":255,"occupied":false},{"name":"Room 3","size":"Large","bath":"Private","weeklyRent":250,"occupied":true},{"name":"Room 4","size":"Medium","bath":"Shared","weeklyRent":215,"occupied":true},{"name":"Room 5","size":"Medium","bath":"Shared","weeklyRent":205,"occupied":false},{"name":"Room 6","size":"Small","bath":"Shared","weeklyRent":190,"occupied":true}]}],"labels":[{"text":"North Lane","x":45,"y":11},{"text":"High Street","x":28,"y":28},{"text":"Elm Street","x":86,"y":60},{"text":"Park Road","x":43,"y":64,"vertical":true},{"text":"Mill Lane","x":70,"y":44,"vertical":true},{"text":"City Park","x":14,"y":52,"green":true},{"text":"Greenway","x":55,"y":85,"green":true}]},"pulse":{"months":["Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep"],"markets":[{"id":"lakeview","name":"Lakeview","rent":215,"g":0.06,"occupancy":91.2,"occupancyChangePts":1.4,"listings":1840,"listingsChangePct":4.2,"seed":1},{"id":"riverside","name":"Riverside","rent":185,"g":0.08,"occupancy":88.4,"occupancyChangePts":2.1,"listings":2310,"listingsChangePct":6.8,"seed":2},{"id":"northgate","name":"Northgate","rent":235,"g":0.04,"occupancy":92.6,"occupancyChangePts":0.6,"listings":1290,"listingsChangePct":-1.5,"seed":3},{"id":"midtown","name":"Midtown","rent":198,"g":0.05,"occupancy":89.7,"occupancyChangePts":0,"listings":1560,"listingsChangePct":2.3,"seed":4},{"id":"harbor","name":"Harbor Point","rent":172,"g":-0.03,"occupancy":86.9,"occupancyChangePts":-1.2,"listings":2050,"listingsChangePct":-3.4,"seed":5}]},"screens":{"forecast":{"tag":"Property Predictor, Decision Board","alt":{"screen":"RoomIQ's Property Predictor results for a six-bedroom demo house: $5,057 a month, printed as price x rooms x occupancy x 4.35 weeks, with local support, Confidence Medium, 14 comps a median 1.6 mi away, and an amber note that one room is not entered.","lift":"Monthly revenue of $5,057 with its formula printed underneath, labeled local support and Confidence Medium."}},"location":{"tag":"Property Predictor, nearby coliving supply","alt":{"supply":"A map around the demo address: 17 active co-living properties inside a 3-mile ring, a few more outside it."}},"market":{"tag":"Dashboard, market and demand map","alt":{"screen":"RoomIQ's dashboard for a made-up metro: Top US markets by Market Score on the left, and a demand map of cells marked Strong, Watch, Weak and Thin on the right."}},"baseline":{"tag":"Property Predictor, baseline profile","alt":{"screen":"The baseline profile for the demo house: six bedrooms and four baths, two private-bath rooms, shared-bath pressure 2.0, five of six rooms entered, and the per-room price optimizer."}},"analyzer":{"tag":"Property Analyzer, property signal","alt":{"screen":"The Property Analyzer for a comparable house: signal Useful benchmark, evidence High, a $64 bathroom premium, 83.3% occupancy and $5,049 estimated from observed rents, not collected payments."}},"rooms":{"tag":"Property Analyzer, room segments and windows","alt":{"windows":"Seven, 30 and 90-day windows for a comparable house: occupancy 83.3%, 84.4% and 82.0% at $33 a day, with the change against the prior window.","evidence":"Evidence Quality for a comparable house: High, with 96.4% completeness and 100% history coverage."}},"real01":{"tag":"Dashboard, choosing markets","alt":{"screen":"RoomIQ's dashboard asking you to pick up to three US cities or a metro group, with metro shortcuts such as Dallas-Fort Worth and Atlanta."}},"real02":{"tag":"Dashboard, Dallas-Fort Worth","alt":{"screen":"RoomIQ's dashboard for the Dallas-Fort Worth Metroplex: top US markets ranked by Market Score beside a map of submarket signals, with an occupancy score legend of Strong 2, Watch 29, Weak 11 and Thin 163."}},"real03":{"tag":"Dashboard, trends","alt":{"screen":"RoomIQ's dashboard Trends tab: a seasonality chart of occupancy against the US national pattern, beside the market map."}},"real04":{"tag":"Property detail, the numbers","alt":{"screen":"Property detail figures for one house: 62.5% occupancy, $178 average weekly asking rent, 5 of 8 rooms occupied, and $4,370 estimated rental revenue based on observed rents and occupancy, not collected payments."}},"real05":{"tag":"Property Analyzer, search","alt":{"screen":"RoomIQ's Property Analyzer search: enter a city or a property ID, choose a 90-day history window, then pick a property to analyze."}},"real06":{"tag":"Property Analyzer, signal","alt":{"screen":"A property signal read: use it as a benchmark, signal Useful benchmark, evidence High, 0 flagged rooms of 8, a best spread of $72 as a bathroom premium, and a performance snapshot with 87.5% occupancy and $7,742 estimated revenue."}},"real07":{"tag":"Property Analyzer, rooms","alt":{"screen":"Room segments by bath and size, 7, 30 and 90 day windows of occupancy and daily price, and evidence quality rated High.","windows":"Rolling windows: over 7 days 98.2% occupancy, over 30 days 88.3%, over 90 days 62.5%, each with average daily price and volatility.","evidence":"Evidence quality rated High: completeness 100.0%, history coverage 100.0%, media 9 plus 34."}},"real11":{"tag":"Property Predictor, location","alt":{"screen":"Property Predictor step one: the typed address, hidden here, with a map of nearby co-living supply within about 3 miles."}},"real12":{"tag":"Property Predictor, baseline","alt":{"screen":"Property Predictor step two: core specifications and the bathroom mix, the details investors underwrite. The typed address is hidden."}},"real13":{"tag":"Property Predictor, run forecast","alt":{"screen":"Run Forecast: automatic model routing and an evidence lookback slider set to 270 days."}},"real14":{"tag":"Property Predictor, results","alt":{"screen":"A real forecast: $1,098 a month, printed as price x rooms x occupancy x 4.35 weeks, labeled Fallback support and Confidence Low, with 10 comps a median 82.88 mi away and only 1 of 3 bedrooms entered."}},"real15":{"tag":"Deal Calculator","alt":{"screen":"The Deal Calculator taking the $1,098 monthly estimate into a base scenario, with vacancy, purchase price and closing costs to fill in."}}}};
   const SITE = {"name":"RoomIQ","url":null,"phone":null,"phoneHref":null,"signinUrl":"https://roomiq.io/dashboard","trialUrl":"https://roomiq.io/dashboard","proUrl":"https://roomiq.io/welcome","portfolioUrl":null,"scorecardUrl":null,"formEndpoint":null,"contactEmail":"marcel@roomiq.io","contactHref":"mailto:marcel@roomiq.io","pilotHref":"mailto:marcel@roomiq.io?subject=Operator%20guided%20pilot","walkthroughHref":"mailto:marcel@roomiq.io?subject=20-minute%20walkthrough","privacyUrl":"https://roomiq.io/privacy","termsUrl":"https://roomiq.io/terms","choicesUrl":"https://roomiq.io/privacy","company":"RoomIQ","platforms":"Web","noindex":true,"seatsLeft":null,"coveredMarkets":null,"designVersion":"landing_v3"};
-  const SCORE = {"title":"Co-Living Deal Readiness Scorecard","lead":"Seven questions about your next deal. One per screen.","progress":"Question {n} of {total}","back":"Back","next":"Next","see":"See my score","restart":"Start again","of":"out of 100","gapsH":"Your three biggest gaps","outside":"Zoning and financing sit outside RoomIQ. This is not legal or financial advice.","questions":[{"q":"Where does your per-room rent number come from?","a":[{"t":"I don't have one yet","p":0},{"t":"A platform's earnings calculator","p":1},{"t":"Whole-home rent divided by bedrooms","p":1},{"t":"Asking rents I found on room listings","p":2},{"t":"Comps of nearby rooms, with how fast they filled","p":4}],"gap":"Your rent number is an assumption. Check what rooms near the address list for, by bath type, and how much evidence stands behind it."},{"q":"How do you know how fast rooms fill near the property?","a":[{"t":"I haven't looked","p":0},{"t":"I assume a vacancy percentage","p":1},{"t":"Host stories and forum posts","p":2},{"t":"A platform's market reports","p":2},{"t":"Observed fill times of comparable rooms nearby","p":4}],"gap":"You don't know how fast rooms fill nearby, and your first months of cash flow depend on it."},{"q":"How many co-living homes compete within about 3 miles?","a":[{"t":"No idea","p":0},{"t":"Some, I think","p":1},{"t":"I counted listings","p":2},{"t":"I know the count and roughly how full they are","p":4}],"gap":"Supply nearby decides how hard your rooms will be to fill. Count it before you buy."},{"q":"Have you decided the bath mix?","a":[{"t":"Not yet","p":0},{"t":"Keeping the current bathrooms","p":1},{"t":"Adding a bathroom because it seems worth it","p":2},{"t":"Modeled private against shared-bath rents nearby","p":4}],"gap":"Bath mix is a structural revenue driver. Compare private and shared-bath rents nearby before you build."},{"q":"Have you checked local rules on unrelated adults sharing a home?","a":[{"t":"Not yet","p":0},{"t":"I asked around","p":1},{"t":"Read a summary online","p":2},{"t":"Checked the municipal code","p":3},{"t":"Confirmed with the city or an attorney","p":4}],"gap":"Zoning decides whether the plan is allowed at all, and it differs by city. Dallas counts four unrelated to the head of household, Phoenix five, Atlanta six. RoomIQ does not check zoning: ask the city or an attorney."},{"q":"How will you finance the house?","a":[{"t":"Not sure yet","p":0},{"t":"A loan sized on whole-home rent","p":2},{"t":"Cash","p":3},{"t":"A lender experienced with room rentals, briefed on per-room income","p":4}],"gap":"Many loans are sized on whole-home rent, not room rents, and insurance is not a given. Talk to a lender and an insurer early."},{"q":"What happens if lease-up takes longer than planned?","a":[{"t":"I haven't planned for it","p":0},{"t":"I'd lower rents","p":1},{"t":"A few weeks of reserves","p":2},{"t":"Reserves sized from how comparable launches nearby filled","p":4}],"gap":"Lease-up can stall. Size reserves from how comparable launches nearby actually filled."}],"tiers":[{"min":0,"name":"Beginner: underwriting on assumptions","msg":"Your numbers lean on estimates more than evidence. Start with the three gaps below. Each one can be checked before you make an offer.","cta":"email"},{"min":40,"name":"Intermediate: partial evidence","msg":"You have part of the picture. The gaps left are the ones that decide whether rooms fill.","cta":"forecast"},{"min":70,"name":"Advanced: evidence-ready","msg":"You underwrite like an operator. The open question is whether your evidence holds for this specific address.","cta":"walkthrough"}],"forecastCta":"Run a free forecast on your address","walkthroughCta":"Book a 20-minute walkthrough","emailH":"Want your results and the underwriting checklist by email?","emailLabel":"Email","emailConsent":"You may email me my results and RoomIQ's underwriting checklist.","emailSubmit":"Email me my results","emailThanks":"Sent. Check your inbox shortly.","emailNotSent":"Preview: no form endpoint is set, so nothing was sent."};
   const FORM = {"title":"Apply for a founding seat","lead":"Twelve seats. Current RoomIQ users get first call. We reply by email.","name":"First name","email":"Email","homes":"Homes you run today","choose":"Choose","homesOptions":["None yet","1","2 to 5","6 to 10","More than 10"],"market":"Where you buy","marketOpt":"(optional)","consentEmail":"You may email me about the founding operator cohort.","submit":"Send my application","thanks":"Thanks. We'll email you about the next step.","failed":"That didn't send. Please email us:","notSent":"Preview: no form endpoint is set, so nothing was sent.","honeypot":"Website"};
   const TOOL = {"title":"What could your house earn by the room?","rooms":"Rentable rooms","fewer":"Fewer rooms","more":"More rooms","roomsSr":"rooms","rent":"Rent per room","result":"Estimated monthly rent","yearTpl":"{v} a year, if each room is rented 90% of the time","link":"Compare with real markets in RoomIQ","init":{"rooms":6,"rent":200,"rentText":"$200/wk","num":"$4,698","year":"$56,376","yearLine":"$56,376 a year, if each room is rented 90% of the time"}};
   // The processed screens (tools/process-shots.mjs): sizes, widths, placeholders and named boxes. Do not edit.
@@ -1975,7 +1904,6 @@ const RiqMath = (() => {
   const WEEKS = 4.35;
   const OCCUPANCY = 90;                       // the room calculator's fixed occupancy, in %
   const DEAL = { downPaymentPct: 25, annualRatePct: 7, termYears: 30, operatingCostPct: 30 };
-  const SCORE_MAX = 28;                       // 7 questions, 0 to 4 points each
 
   /* Tool 1: rooms x weekly rent x weeks a month x occupancy */
   const estimate = (rooms, weeklyRent, occupancyPct = OCCUPANCY) => rooms * weeklyRent * WEEKS * (occupancyPct / 100);
@@ -2000,16 +1928,10 @@ const RiqMath = (() => {
   const series = (m) => Array.from({ length: 12 }, (_, i) => (i === 11 ? m.rent : m.rent * (1 - (m.g * (11 - i)) / 11) + Math.sin(1.3 * i + m.seed) * m.rent * 0.018));
   const change = (s) => ((s[s.length - 1] - s[0]) / s[0]) * 100;
 
-  /* The scorecard: points out of 28, scaled to 100; tiers at 40 and 70; the three lowest-scoring questions as gaps,
-     ties broken by question order */
-  const score = (points) => Math.round((points.reduce((a, b) => a + b, 0) / SCORE_MAX) * 100);
-  const tier = (s, tiers) => tiers.reduce((at, t, i) => (s >= t.min ? i : at), 0);
-  const gaps = (points, n = 3) => points.map((p, i) => [p, i]).sort((a, b) => a[0] - b[0] || a[1] - b[1]).slice(0, n).map((x) => x[1]);
-
   /* Money as the live tools show it: whole dollars, a true minus sign */
   const money = (v) => { const r = Math.round(v); return (r < 0 ? "−" : "") + "$" + Math.abs(r).toLocaleString("en-US"); };
 
-  return { WEEKS, OCCUPANCY, DEAL, SCORE_MAX, estimate, occupancyGap, rentGap, deal, collects, occupiedCount, series, change, score, tier, gaps, money };
+  return { WEEKS, OCCUPANCY, DEAL, estimate, occupancyGap, rentGap, deal, collects, occupiedCount, series, change, money };
 })();
 if (typeof module !== "undefined") module.exports = RiqMath;
   const M = RiqMath;
@@ -2779,86 +2701,13 @@ if (typeof module !== "undefined") module.exports = RiqMath;
     $("#sent").focus();
   });
 
-  // The Deal Readiness Scorecard: seven questions, one per screen; the score, the tier and the three gaps
-  {
-    const dlg = $("#score-dlg"), Q = SCORE.questions, quiz = $("#sc-quiz"), result = $("#sc-result");
-    const scForm = $("#sc-form"), opts = $("#sc-opts"), back = $("#sc-back"), next = $("#sc-next");
-    let at = 0;
-    const answers = Q.map(() => null);
-    function show() {
-      const q = Q[at];
-      $("#sc-n").textContent = fill(SCORE.progress, { n: at + 1, total: Q.length });
-      $("#sc-text").textContent = q.q;
-      $("#sc-bar").parentElement.style.setProperty("--p", `${(at / Q.length) * 100}%`);
-      $("#sc-bar").style.width = `${(at / Q.length) * 100}%`;
-      opts.innerHTML = q.a.map((a, i) => `<label class="sc-opt"><input type="radio" name="sc-a" value="${i}"${answers[at] === i ? " checked" : ""}><span>${xmlEsc(a.t)}</span></label>`).join("");
-      back.hidden = at === 0;
-      next.disabled = answers[at] === null;
-      next.textContent = at === Q.length - 1 ? SCORE.see : SCORE.next;
-    }
-    opts.addEventListener("change", (e) => { if (e.target.name === "sc-a") { answers[at] = +e.target.value; next.disabled = false; } });
-    back.addEventListener("click", () => { if (at > 0) { at--; show(); const c = $("input:checked", opts) || $("input", opts); if (c) c.focus(); } });
-    scForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      if (answers[at] === null) return;
-      if (at < Q.length - 1) { at++; show(); const first = $("input", opts); if (first) first.focus(); return; }
-      finish();
-    });
-    let last = null;
-    function finish() {
-      const pts = answers.map((a, i) => Q[i].a[a].p);
-      const s = M.score(pts), ti = M.tier(s, SCORE.tiers), tier = SCORE.tiers[ti], gaps = M.gaps(pts);
-      last = { score: s, tier: tier.name, answers: answers.map((a, i) => Q[i].a[a].t), gaps: gaps.map((i) => Q[i].q) };
-      $("#sc-num").textContent = s;
-      $("#sc-tier").textContent = tier.name;
-      $("#sc-msg").textContent = tier.msg;
-      $("#sc-gaps").innerHTML = gaps.map((i) => `<li><span><b>${xmlEsc(Q[i].q)}</b>${xmlEsc(Q[i].gap)}</span></li>`).join("");
-      const fc = $("#sc-forecast"), walk = $("#sc-walk");
-      fc.classList.toggle("btn-primary", tier.cta === "forecast");
-      fc.classList.toggle("btn-line", tier.cta !== "forecast");
-      walk.hidden = tier.cta !== "walkthrough";
-      walk.classList.toggle("btn-primary", tier.cta === "walkthrough");
-      walk.classList.toggle("btn-line", tier.cta !== "walkthrough");
-      $("#sc-email").classList.toggle("lead", tier.cta === "email");
-      quiz.hidden = true;
-      result.hidden = false;
-      result.focus();
-    }
-    $("#sc-again").addEventListener("click", () => {
-      answers.fill(null); at = 0;
-      result.hidden = true; quiz.hidden = false;
-      $("#sc-sent").hidden = true;
-      show();
-      const first = $("input", opts); if (first) first.focus();
-    });
-    const scEmail = $("#sc-email");
-    scEmail.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const mail = $("#sc-mail"), consent = $("#sc-consent");
-      const ok = [setErr(mail, okEmail(mail.value.trim()) ? "" : T.form.email), setErr(consent, consent.checked ? "" : T.form.consent)];
-      if (ok.includes(false)) { $$("[aria-invalid=true]", scEmail)[0]?.focus(); return; }
-      const btn = scEmail.querySelector('button[type="submit"]');
-      btn.disabled = true;
-      try {
-        const res = await post({ type: "scorecard", email: mail.value.trim(), consentEmail: true, ...last });
-        if (res === "sent") $("#sc-sent-note").remove();
-      } catch (err) { btn.disabled = false; return; }
-      $("#sc-sent").hidden = false;
-      $("#sc-sent").focus();
-    });
-    document.addEventListener("click", (e) => {
-      const a = e.target.closest('[data-cta="score"]');
-      if (!a || e.defaultPrevented) return;
-      if (SITE.scorecardUrl) { e.preventDefault(); location.href = withParams(SITE.scorecardUrl); return; }
-      if (!openDlg(dlg, a)) return;
-      e.preventDefault();
-      if (!result.hidden) { result.focus(); return; }
-      show();
-      const first = $("input:checked", opts) || $("input", opts);
-      if (first) first.focus({ preventScroll: true });
-    });
-    show();
-  }
+  // The Deal Readiness Scorecard is its own tool, built separately. Every "score" button links to it: set
+  // site.scorecardUrl (in the SITE data above), or put the URL in the buttons' href. While a button's href is still
+  // the placeholder "#", a click does nothing.
+  $$('[data-cta="score"]').forEach((a) => {
+    if (SITE.scorecardUrl) a.href = withParams(SITE.scorecardUrl);
+    else if (a.getAttribute("href") === "#") a.addEventListener("click", (e) => e.preventDefault());
+  });
 })();
 </script>
 </body>
