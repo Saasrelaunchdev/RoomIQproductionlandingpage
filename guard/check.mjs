@@ -48,6 +48,11 @@ for (const [name, marks] of Object.entries(spec.features)) {
   const missing = marks.filter((m) => !page.includes(m));
   if (missing.length) fails.push(`feature lost: ${name} (missing ${missing.map((m) => JSON.stringify(m)).join(", ")})`);
 }
+// ...and nothing the user asked to remove may come back (an edit made on an older copy would bring it back)
+for (const [name, marks] of Object.entries(spec.removed || {})) {
+  const back = marks.filter((m) => page.includes(m));
+  if (back.length) fails.push(`removed on request, but back in the page: ${name} (found ${back.map((m) => JSON.stringify(m)).join(", ")})`);
+}
 
 // 4: every file the page loads exists
 const need = new Set();

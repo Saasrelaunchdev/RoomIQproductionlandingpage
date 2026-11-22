@@ -16,8 +16,12 @@
     "Deal Readiness Scorecard": ["id=\"score-dlg\"", "id=\"sc-result\""],
     "Final call to action and footer": ["id=\"final\"", "class=\"foot"],
     "Dark mode and reduced motion": ["theme-toggle", "tier-c"],
-    "Real screens captioned as real": ["Real screen · RoomIQ web app"],
     "Story film opened from the hero": ["data-film-open", "id=\"film-dlg\"", "roomiq-story.mp4", "roomiq-story.webm", "roomiq-story.en.vtt", "roomiq-story-poster.webp"]
+  },
+  "_removedNote": "Things the user asked to take off the page. guard/check.mjs fails if any comes back. Remove an entry only when the user asks for it again.",
+  "removed": {
+    "Captions under screens and illustrations (v4)": ["proof-chip", "<figcaption", "Product preview · demo data", "Real screen · RoomIQ web app"],
+    "Notes under the visuals (v4)": ["class=\"dd-ex\"", "class=\"how-note\"", "class=\"exc-cond\"", "class=\"film-note\"", "class=\"nap-note\""]
   },
   "allowedEmails": ["marcel@roomiq.io", "name@example.com", "maya@example.com", "test@example.com"]
 }

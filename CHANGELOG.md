@@ -2,6 +2,15 @@
 
 Every change to the page gets a new version here, newest first, and the same number in `index.html` (`<meta name="page-version" content="N">`). `guard/check.mjs` refuses a push whose version is not higher than the one on `main`, or that has no entry here.
 
+## v4 (2026-11-22)
+- Built on v3 (the story film), so nothing from it is lost.
+- Removed, at the owner's request, every caption under a screen or illustration: "Product preview · demo data · web app · the operator", "Real screen · RoomIQ web app · Nov 2026" (with or without "personal details hidden") and "Illustration of the feature, not a product screen".
+- Removed the notes directly under visuals: the "In the demo" line under the deal demo, the calculator disclaimer under the feature cards, "No accuracy claim. Working you can check." in the steps strip, the note under the film, and "Same calculator, same formula, your inputs." under the cost list.
+- Kept: the screens' alt text (screen readers), the illustration's screen-reader label, the arithmetic note on the slow-launch example, and the footer, which now carries the disclosure: demos, film and hero are made up; the other app screens are real, with personal details hidden.
+- The real-app tour's screen now fills its stage (no room kept for a caption).
+- `guard/features.json`: the "captioned as real" feature is retired, and a new `removed` list makes the guard fail if any of these captions or notes come back.
+- `CLAUDE.md`: the Meta Ads page note from the `claude/blissful-hawking-0wvh7y` branch is carried over.
+
 ## v3 (2026-11-22)
 - New: the story film. The hero's visual is now the film's poster, and "Watch the story" opens it in a dialog: 1:58, with sound and English captions, loaded only on click; Esc closes it and returns focus to the button.
 - The film follows an operator from napkin math to an offer made on evidence. It uses the page's real screens of the RoomIQ web app (Predictor, Analyzer, forecast, Deal Calculator), each captioned as a real screen, shows the RoomIQ logo throughout, and turns from the before to the after on "From guesswork to a defensible offer." Every house, market and figure in its story is made up, and the film says so.
