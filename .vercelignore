@@ -1,1 +1,9 @@
+# Repo-only files: not part of the site
+CLAUDE.md
+CHANGELOG.md
+guard
+.githooks
+.github
+.claude
+# The story film's sources and tools (anchored, so media/story-film/ is still uploaded)
 /story-film/

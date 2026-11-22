@@ -1,0 +1,4 @@
+#!/bin/sh
+# Anti-regression: refuse a push that would take the page backwards. Enable once per clone:
+#   git config core.hooksPath .githooks
+node guard/check.mjs || { echo "push blocked by guard/check.mjs (see CLAUDE.md, Anti-regression)"; exit 1; }
